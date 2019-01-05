@@ -17,8 +17,6 @@ y
 Inetwork/src/main/java/banty/com/network/retrofit/RetrofitClientCreator.kt,3/9/3927bf726899fa5b8ea3fadd7e7db94289e394ee
 Ö
 Urepository/src/main/java/banty/com/repository/dagger/component/RepositoryComponent.kt,4/9/499befcfe00930d3be6a86719e38a32cba91f636
-
-Orepository/src/main/java/banty/com/repository/remote/BitcoinRemoteRepository.kt,4/e/4e7d656b01eb6c225bfbcbdb4ac9801be9e94ce2
 s
 Capp/src/main/java/banty/com/cryptostats/dagger/modules/AppModule.kt,c/1/c174dc5bf917d5aef5cf31bd79e6ffa159f4c6e8
 
@@ -27,3 +25,25 @@ x
 Happ/src/main/java/banty/com/cryptostats/dagger/component/AppComponent.kt,a/8/a809c646de4269202a6bdcbd7f6de7e78daf8993
 r
 Bapp/src/main/java/banty/com/cryptostats/BitcoinStatsApplication.kt,4/9/49cf8b0bffcd1e63011ec05f88a43dc1beb263f7
+P
+ app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
+k
+;repository/src/main/java/banty/com/repository/Repository.kt,d/8/d8a588897cdf3118a59dd3b840d08a890a243223
+t
+Drepository/src/main/java/banty/com/repository/utility/NetworkUtil.kt,d/8/d87d97563f16391259b87cf82c99c5044e8f1a23
+}
+Mrepository/src/main/java/banty/com/repository/local/LocalBitcoinRepository.kt,7/c/7c07679c3a59801717fd079cda70af6e4a1cb9e5
+[
++app/src/main/res/layout/charts_fragment.xml,c/6/c693dd728164e2cc3e322f774ab48e16c123399e
+\
+,app/src/main/res/layout/activity_options.xml,8/8/88e3f2092bb13a547fd9b7966a89ec8e1ad99e35
+G
+datamodels/build.gradle,a/e/ae2855dd434d362b7f49b9ab686e39c568af098e
+p
+@app/src/main/java/banty/com/cryptostats/charts/ChartsFragment.kt,f/a/fa7bf70c90245cdd2e1dfe34310f763d02f7d064
+y
+Iapp/src/main/java/banty/com/cryptostats/charts/ChartsFragmentPresenter.kt,7/3/7342fe85a24c45afd9999d945ac4c3dfa205db0a
+Å
+Qdatamodels/src/main/java/banty/com/datamodels/response/BitcoinApiResponseModel.kt,8/b/8b74e1c4ad3c82999f7588176739d0ea436ff091
+{
+Kapp/src/main/java/banty/com/cryptostats/charts/ChartsFragmentMVPContract.kt,0/d/0dffb52f510f1be653f9583d6b768265438d9155

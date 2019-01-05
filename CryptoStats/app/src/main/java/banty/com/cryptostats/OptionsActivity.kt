@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class OptionsActivity : AppCompatActivity() {
 
-    val TAG = OptionsActivity::class.java.canonicalName
+    private val tag = OptionsActivity::class.java.canonicalName
 
     @Inject
     lateinit var repository: Repository
@@ -25,14 +25,14 @@ class OptionsActivity : AppCompatActivity() {
             ?.injectDependencies(this)
 
         if (savedInstanceState == null) {
-            repository.getMarketPrice(timespan = "30days")
+            repository.getMemoryPoolSize(timespan = "30days")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ res ->
-                    Log.d("Banty", "${res.values?.size}")
+                    Log.d(tag, "${res.values?.size}")
                     showChartsFragment(res)
                 }, { error ->
-                    Log.d("Banty", "Error : ${error.message}")
+                    Log.d(tag, "Error : ${error.message}")
                 })
         }
     }
