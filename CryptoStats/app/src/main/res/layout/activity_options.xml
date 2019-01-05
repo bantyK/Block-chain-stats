@@ -14,9 +14,20 @@
             android:layout_height="match_parent">
     </FrameLayout>
 
+    <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/colorAccent"
+            android:layout_gravity="center"
+            android:visibility="gone"
+    />
+
     <!--Charts fragment holder and time frame layout-->
     <LinearLayout
-            android:id="@+id/chart_fragment_container"
+            android:id="@+id/chart_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -61,9 +72,8 @@
 
         </LinearLayout>
 
-
         <FrameLayout
-                android:id="@+id/fragment_container"
+                android:id="@+id/charts_fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

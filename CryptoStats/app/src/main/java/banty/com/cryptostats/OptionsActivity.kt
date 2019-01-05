@@ -5,56 +5,50 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import banty.com.cryptostats.charts.ChartsFragment
+import banty.com.cryptostats.options.*
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.repository.Repository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class OptionsActivity : AppCompatActivity(), View.OnClickListener {
-    private val tag = "OptionsActivity"
-    private val days_30 = "30days"
-    private val days_60 = "60days"
-    private val days_180 = "180days"
-    private val year_1 = "1year"
-    private var currentTimeSpan: String = days_30
 
+class OptionsActivity : AppCompatActivity(), View.OnClickListener, OptionsActivityMVPContract.View {
+    private val logTag = "OptionsActivity"
+
+    private lateinit var presenter: OptionsActivityMVPContract.Presenter
+
+    private lateinit var optionsFragmentContainer: View
+    private lateinit var chartFragmentContainer: View
+    private lateinit var progressBar: ProgressBar
 
     @Inject
     lateinit var repository: Repository
-
-    lateinit var optionsFragmentContainer: View
-    lateinit var chartFragmentContainer: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_options)
         initUIElementes()
+
         (application as BitcoinStatsApplication).getAppComponent()
             ?.injectDependencies(this)
 
-        if (savedInstanceState == null) {
-            getDataFromReository(days_30)
-        }
-    }
+        presenter = OptionsActivityPresenter(this, repository)
 
-    private fun getDataFromReository(timespan: String) {
-        repository.getMemoryPoolSize(timespan = timespan)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ res ->
-                Log.d(tag, "${res.values?.size}")
-                showChartsFragment(res)
-            }, { error ->
-                Log.d(tag, "Error : ${error.message}")
-            })
+        if (savedInstanceState == null) {
+            showProgressBar()
+            presenter.getDataFromRepository(days_30)
+        }
     }
 
     /*
     * Initializes the UI elements
     * */
     private fun initUIElementes() {
+        chartFragmentContainer = findViewById(R.id.charts_fragment_container)
+        optionsFragmentContainer = findViewById(R.id.options_fragment_container)
+        progressBar = findViewById(R.id.progress_bar)
+
         val button30Days = findViewById<Button>(R.id.button_30days)
         val button60Days = findViewById<Button>(R.id.button_60days)
         val button180Days = findViewById<Button>(R.id.button_180days)
@@ -66,10 +60,10 @@ class OptionsActivity : AppCompatActivity(), View.OnClickListener {
         button1year.setOnClickListener(this)
     }
 
-    private fun showChartsFragment(res: BitcoinApiResponseModel) {
-        Log.d("Banty", "Show Charts Fragment")
+    override fun showChartsFragment(res: BitcoinApiResponseModel) {
+        Log.d(logTag, "Show Charts Fragment")
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, ChartsFragment.newInstance(res))
+            .replace(R.id.charts_fragment_container, ChartsFragment.newInstance(res))
             .commit()
     }
 
@@ -78,42 +72,45 @@ class OptionsActivity : AppCompatActivity(), View.OnClickListener {
         outState?.putInt("data", 1)
     }
 
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.button_30days -> {
-                if (currentTimeSpanIsDifferentThan(days_30)) {
-                    getDataFromReository(days_30)
-                    currentTimeSpan = days_30
-                }
+                Log.d(logTag, "handle click for 30 days")
+                presenter.handleButtonClick(days_30)
             }
             R.id.button_60days -> {
-                if (currentTimeSpanIsDifferentThan(days_60)) {
-                    getDataFromReository(days_60)
-                    currentTimeSpan = days_60
-                }
+                Log.d(logTag, "handle click for 60 days")
+                presenter.handleButtonClick(days_60)
             }
             R.id.button_180days -> {
-                if (currentTimeSpanIsDifferentThan(days_180)) {
-                    getDataFromReository(days_180)
-                    currentTimeSpan = days_180
-                }
+                Log.d(logTag, "handle click for 180 days")
+                presenter.handleButtonClick(days_180)
             }
             R.id.button_1year -> {
-                if (currentTimeSpanIsDifferentThan(year_1)) {
-                    getDataFromReository(year_1)
-                    currentTimeSpan = year_1
-                }
+                Log.d(logTag, "handle click for 1 year")
+                presenter.handleButtonClick(year_1)
             }
             else -> {
-                if (currentTimeSpanIsDifferentThan(days_30)) {
-                    getDataFromReository(days_30)
-                    currentTimeSpan = days_30
-                }
+                Log.d(logTag, "default case : 30 days")
+                presenter.handleButtonClick(days_30)
             }
         }
     }
 
-    private fun currentTimeSpanIsDifferentThan(timespan: String): Boolean {
-        return !timespan.contentEquals(currentTimeSpan)
+    override fun hideChartContainer() {
+        chartFragmentContainer.visibility = View.GONE
+    }
+
+    override fun displayChartContainer() {
+        chartFragmentContainer.visibility = View.VISIBLE
+    }
+
+    override fun hideProgressBar() {
+        progressBar.visibility = View.GONE
+    }
+
+    override fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
     }
 }
