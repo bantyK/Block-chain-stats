@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Crypto Stats</string>
+    <string name="thirty_days">30 days</string>
+    <string name="sixty_days">60 days</string>
+    <string name="hundred_eighty_days">180 days</string>
+    <string name="one_year">1 year</string>
 </resources>
