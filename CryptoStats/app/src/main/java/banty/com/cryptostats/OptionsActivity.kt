@@ -3,7 +3,7 @@ package banty.com.cryptostats
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import banty.com.repository.BitcoinRepository
+import banty.com.repository.Repository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -11,7 +11,7 @@ import javax.inject.Inject
 class OptionsActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var remoteRepository: BitcoinRepository
+    lateinit var repository: Repository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class OptionsActivity : AppCompatActivity() {
         (application as BitcoinStatsApplication).getAppComponent()
             ?.injectDependencies(this)
 
-        remoteRepository.getAverageBlockSize(timespan = "30days")
+        repository.getAverageBlockSize(timespan = "30days")
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe { res ->

@@ -2,8 +2,7 @@ package banty.com.repository.remote
 
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.network.retrofit.BitcoinApiService
-import banty.com.repository.BitcoinRepository
-import banty.com.repository.dagger.component.DaggerRepositoryComponent
+import banty.com.repository.Repository
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -13,16 +12,7 @@ import javax.inject.Inject
  * Implementation of BitcoinRepository to fetch the data from Bitcoin API.
  * Hides the low level implementation of retrofit and api calls.
  */
-class BitcoinRemoteRepository : BitcoinRepository {
-
-    init {
-        DaggerRepositoryComponent.builder()
-            .build().injectRetrofit(this)
-    }
-
-    // bitcoin api service injected by Dagger2
-    @Inject
-    lateinit var bitcoinApiService: BitcoinApiService
+class RemoteBitcoinRepository @Inject constructor(val bitcoinApiService: BitcoinApiService) : Repository {
 
     // below are the 4 functions to make the api calls for respective chart data
     override fun getMarketPrice(timespan: String): Observable<BitcoinApiResponseModel> {

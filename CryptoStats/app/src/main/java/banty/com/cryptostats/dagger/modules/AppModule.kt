@@ -1,7 +1,7 @@
 package banty.com.cryptostats.dagger.modules
 
 import banty.com.repository.BitcoinRepository
-import banty.com.repository.remote.BitcoinRemoteRepository
+import banty.com.repository.Repository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -14,7 +14,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRemoteBitcoinRepository(): BitcoinRepository {
-        return BitcoinRemoteRepository()
+    fun provideBitcoinRepository(): Repository {
+        return BitcoinRepository()
     }
 }

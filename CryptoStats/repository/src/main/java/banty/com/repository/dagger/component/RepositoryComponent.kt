@@ -1,7 +1,8 @@
 package banty.com.repository.dagger.component
 
+import banty.com.repository.BitcoinRepository
 import banty.com.repository.dagger.module.RepositoryModule
-import banty.com.repository.remote.BitcoinRemoteRepository
+import banty.com.repository.remote.RemoteBitcoinRepository
 import dagger.Component
 import javax.inject.Singleton
 
@@ -13,5 +14,5 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [RepositoryModule::class])
 interface RepositoryComponent {
-    fun injectRetrofit(bitcoinRepository: BitcoinRemoteRepository)
+    fun injectRetrofit(bitcoinRepository: BitcoinRepository)
 }

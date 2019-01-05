@@ -1,22 +1,73 @@
 package banty.com.repository
 
 import banty.com.datamodels.response.BitcoinApiResponseModel
+import banty.com.repository.dagger.component.DaggerRepositoryComponent
+import banty.com.repository.dagger.module.RepositoryModule
+import banty.com.repository.local.LocalBitcoinRepository
+import banty.com.repository.remote.RemoteBitcoinRepository
+import banty.com.repository.utility.NetworkUtil
 import io.reactivex.Observable
+import javax.inject.Inject
 
 /**
  * Created by Banty on 05/01/19.
+ * High level implementation of Bitcoin repository which provide bitcoin related data
+ * uses @param BitcoinRemoteRepository to fetch the data from server and uses @param BitcoinLocalRepository
+ * to fetch the data from user's local device storage
  *
- * Uses Repository pattern for providing the data objects
- * Hides the details of data retrieval mechanism. Specified 4 functions will be exposed to clients.
- * Interface which will be exposed to caller modules for fetching the bitcoin related data.
+ * Checks the network condition of user's device. If the device is connected to internet and fetches and provide the data from
+ * server, if not then uses the previously stored data from user's local device.
+ *
+ * Other caching mechanisms like timestamp, manual refresh etc can also be used to identify on the data source.
+ *
  */
-interface BitcoinRepository {
+class BitcoinRepository : Repository {
 
-    fun getMarketPrice(timespan: String): Observable<BitcoinApiResponseModel>
+    @Inject
+    lateinit var remoteBitcoinRepository: RemoteBitcoinRepository
 
-    fun getAverageBlockSize(timespan: String): Observable<BitcoinApiResponseModel>
+    @Inject
+    lateinit var localBitcoinRepository: LocalBitcoinRepository
 
-    fun getNumberOfTransactions(timespan: String): Observable<BitcoinApiResponseModel>
+    @Inject
+    lateinit var networkUtil: NetworkUtil
 
-    fun getMemoryPoolSize(timespan: String): Observable<BitcoinApiResponseModel>
+    init {
+        DaggerRepositoryComponent.builder()
+            .repositoryModule(RepositoryModule())
+            .build()
+            .injectRetrofit(this)
+    }
+
+    override fun getMarketPrice(timespan: String): Observable<BitcoinApiResponseModel> {
+        return if (networkUtil.deviceConnectedToNetwork()) {
+            remoteBitcoinRepository.getMarketPrice(timespan)
+        } else {
+            localBitcoinRepository.getMarketPrice(timespan)
+        }
+    }
+
+    override fun getAverageBlockSize(timespan: String): Observable<BitcoinApiResponseModel> {
+        return if (networkUtil.deviceConnectedToNetwork()) {
+            remoteBitcoinRepository.getAverageBlockSize(timespan)
+        } else {
+            localBitcoinRepository.getAverageBlockSize(timespan)
+        }
+    }
+
+    override fun getNumberOfTransactions(timespan: String): Observable<BitcoinApiResponseModel> {
+        return if (networkUtil.deviceConnectedToNetwork()) {
+            remoteBitcoinRepository.getNumberOfTransactions(timespan)
+        } else {
+            localBitcoinRepository.getNumberOfTransactions(timespan)
+        }
+    }
+
+    override fun getMemoryPoolSize(timespan: String): Observable<BitcoinApiResponseModel> {
+        return if (networkUtil.deviceConnectedToNetwork()) {
+            remoteBitcoinRepository.getMemoryPoolSize(timespan)
+        } else {
+            localBitcoinRepository.getMemoryPoolSize(timespan)
+        }
+    }
 }
