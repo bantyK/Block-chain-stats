@@ -1,6 +1,6 @@
 package banty.com.network.retrofit
 
-import banty.com.network.models.BitcoinApiResponseModel
+import banty.com.datamodels.response.BitcoinApiResponseModel
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -25,7 +25,7 @@ interface BitcoinApiService {
     /**
      * Api to fetch the average block size over the specified time span
      * Input same as getMarketPrice
-    * */
+     * */
     @GET("/charts/avg-block-size")
     fun getAverageBlockSize(
         @Query("timespan") timespan: String = "1year",

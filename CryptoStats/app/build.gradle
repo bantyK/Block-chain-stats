@@ -32,7 +32,15 @@ dependencies {
     //dagger 2 for dependency injection
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
     //MPAndroid chart for drawing the graphs and charts
     implementation "com.github.PhilJay:MPAndroidChart:$mp_chart_version"
+
+    //network module
+    implementation project(':repository')
+    implementation project(':datamodels')
+
+    //rxjava
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjava_version"
 
 }
