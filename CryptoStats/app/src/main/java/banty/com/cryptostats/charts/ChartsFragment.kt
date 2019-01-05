@@ -62,6 +62,8 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View {
 
     override fun showChart(data: LineData) {
         lineChart.data = data
+        lineChart.setDescription(presenter?.getDescription(getChartsDataFromArguments()))
+
     }
 
     private fun getChartsDataFromArguments(): BitcoinApiResponseModel? {

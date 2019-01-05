@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class OptionsActivity : AppCompatActivity() {
 
-    private val tag = OptionsActivity::class.java.canonicalName
+    private val tag = "OptionsActivity"
 
     @Inject
     lateinit var repository: Repository

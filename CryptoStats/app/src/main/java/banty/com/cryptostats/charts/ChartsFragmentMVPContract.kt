@@ -42,6 +42,10 @@ interface ChartsFragmentMVPContract {
          * Uses the properties of LineDataSet provided by MPAndroidChart to customise the graph
          */
         fun setChartData(bitCoinData: BitcoinApiResponseModel?)
+
+        /**
+         * Returns the description for the chart from the @param BitcoinApiResponseModel*/
+        fun getDescription(bitCoinData: BitcoinApiResponseModel?): String?
     }
 
     // Interface that will define the View of ChartsFragment

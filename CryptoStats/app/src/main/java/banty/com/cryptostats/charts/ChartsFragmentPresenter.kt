@@ -44,25 +44,38 @@ class ChartsFragmentPresenter(private val chartsFragmentView: ChartsFragmentMVPC
         return yAxisValues
     }
 
+    /*
+    * Sets the property of the chart
+    * */
     override fun setChartData(bitCoinData: BitcoinApiResponseModel?) {
         val xAxisValues = getXAxisValues(bitCoinData)
         val yAxisValues = getYAxisValues(bitCoinData)
 
-        val set1 = LineDataSet(yAxisValues, bitCoinData?.name)
-        set1.fillAlpha = 110
-        set1.color = Color.BLACK
-        set1.lineWidth = 1f
-        set1.circleRadius = 3f
-        set1.setDrawCircleHole(false)
-        set1.valueTextSize = 9f
-        set1.setDrawFilled(true)
+        val lineDataSet = LineDataSet(yAxisValues, bitCoinData?.name)
+        //Fill the color below the line
+        lineDataSet.fillAlpha = 0
+
+        //Set the color of line #039BD2
+        lineDataSet.color = Color.rgb(3, 155, 210)
+
+        //Set the line width
+        lineDataSet.lineWidth = 2f
+
+        //Set radius of the circles present on the chart line
+        lineDataSet.circleRadius = 0.0f
+
+        //Set the text size
+        lineDataSet.valueTextSize = 9f
 
         val dataSets = ArrayList<ILineDataSet>()
-        dataSets.add(set1)
+        dataSets.add(lineDataSet)
 
         val data = LineData(xAxisValues, dataSets)
         chartsFragmentView?.showChart(data)
     }
+
+    override fun getDescription(bitCoinData: BitcoinApiResponseModel?): String? =
+        bitCoinData?.description
 
 
 }
