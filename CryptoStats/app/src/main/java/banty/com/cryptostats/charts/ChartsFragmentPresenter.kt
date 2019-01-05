@@ -1,6 +1,7 @@
 package banty.com.cryptostats.charts
 
 import android.graphics.Color
+import banty.com.cryptostats.charts.utility.convertEpochTimeToDate
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -28,7 +29,7 @@ class ChartsFragmentPresenter(private val chartsFragmentView: ChartsFragmentMVPC
 
     private fun getDateFromTimeStamp(timeStamp: Long?): String {
         // Call a utility function for converting the timestamp to date
-        return "$timeStamp"
+        return convertEpochTimeToDate(timeStamp)
     }
 
     override fun getYAxisValues(bitCoinData: BitcoinApiResponseModel?): List<Entry> {
@@ -45,7 +46,7 @@ class ChartsFragmentPresenter(private val chartsFragmentView: ChartsFragmentMVPC
     }
 
     /*
-    * Sets the property of the chart
+    * Sets the properties of the chart
     * */
     override fun setChartData(bitCoinData: BitcoinApiResponseModel?) {
         val xAxisValues = getXAxisValues(bitCoinData)
@@ -76,6 +77,5 @@ class ChartsFragmentPresenter(private val chartsFragmentView: ChartsFragmentMVPC
 
     override fun getDescription(bitCoinData: BitcoinApiResponseModel?): String? =
         bitCoinData?.description
-
 
 }
