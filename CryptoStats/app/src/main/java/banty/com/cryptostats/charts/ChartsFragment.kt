@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import banty.com.cryptostats.R
 import banty.com.datamodels.response.BitcoinApiResponseModel
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.LineData
 
@@ -77,6 +78,8 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View {
     override fun showChart(data: LineData) {
         lineChart.data = data
         lineChart.setDescription(presenter?.getDescription(getChartsDataFromArguments()))
+        lineChart.animateX(2500, Easing.EasingOption.EaseInOutQuart)
+        lineChart.setScaleEnabled(true)
     }
 
     /**
