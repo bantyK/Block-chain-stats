@@ -1,4 +1,4 @@
-package banty.com.cryptostats.utility
+package banty.com.utility
 
 import android.content.Context
 import android.net.ConnectivityManager

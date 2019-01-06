@@ -1,2 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="banty.com.network"/>
+          package="banty.com.network">
+
+    <!--permission for checking if device is connected to internet-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+</manifest>

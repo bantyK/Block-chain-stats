@@ -19,4 +19,13 @@ interface Repository {
     fun getNumberOfTransactions(timespan: String): Observable<BitcoinApiResponseModel>
 
     fun getMemoryPoolSize(timespan: String): Observable<BitcoinApiResponseModel>
+
+    fun saveMarketPriceModel(marketPrice: Observable<BitcoinApiResponseModel>)
+
+    fun saveAverageBlockSizeModel(averageBlockSize: Observable<BitcoinApiResponseModel>)
+
+    fun saveNumTransactionModel(numTransactions: Observable<BitcoinApiResponseModel>)
+
+    fun saveMemoryPoolSizeModel(memoryPoolSize: Observable<BitcoinApiResponseModel>)
+
 }

@@ -3,6 +3,7 @@ package banty.com.cryptostats
 import android.app.Application
 import banty.com.cryptostats.dagger.component.DaggerAppComponent
 import banty.com.cryptostats.dagger.modules.AppModule
+import banty.com.datamodels.ContextProvider
 
 /**
  * Created by Banty on 05/01/19.
@@ -21,6 +22,9 @@ class BitcoinStatsApplication : Application() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule())
             .build() as DaggerAppComponent
+
+        // set context to context provider
+        ContextProvider.setContext(this)
     }
 
     // getter function to get the reference of AppComponent

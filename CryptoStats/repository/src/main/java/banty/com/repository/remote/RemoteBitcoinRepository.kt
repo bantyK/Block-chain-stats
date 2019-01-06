@@ -30,4 +30,20 @@ class RemoteBitcoinRepository @Inject constructor(val bitcoinApiService: Bitcoin
     override fun getMemoryPoolSize(timespan: String): Observable<BitcoinApiResponseModel> {
         return bitcoinApiService.getMemoryPoolSize(timespan)
     }
+
+    override fun saveMarketPriceModel(marketPrice: Observable<BitcoinApiResponseModel>) {
+        // not required to be implemented here. Implemented by LocalRepository
+    }
+
+    override fun saveAverageBlockSizeModel(averageBlockSize: Observable<BitcoinApiResponseModel>) {
+        // not required to be implemented here. Implemented by LocalRepository
+    }
+
+    override fun saveNumTransactionModel(numTransactions: Observable<BitcoinApiResponseModel>) {
+        // not required to be implemented here. Implemented by LocalRepository
+    }
+
+    override fun saveMemoryPoolSizeModel(memoryPoolSize: Observable<BitcoinApiResponseModel>) {
+        // not required to be implemented here. Implemented by LocalRepository
+    }
 }

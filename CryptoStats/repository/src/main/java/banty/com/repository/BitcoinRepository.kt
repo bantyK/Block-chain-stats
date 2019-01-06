@@ -1,15 +1,11 @@
 package banty.com.repository
 
-import banty.com.datamodels.CHART_AVERAGE_BLOCK_SIZE
-import banty.com.datamodels.CHART_MARKET_PRICE
-import banty.com.datamodels.CHART_MEMORY_POOL
-import banty.com.datamodels.CHART_NUM_TRANSACTION
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.repository.dagger.component.DaggerRepositoryComponent
 import banty.com.repository.dagger.module.RepositoryModule
 import banty.com.repository.local.LocalBitcoinRepository
 import banty.com.repository.remote.RemoteBitcoinRepository
-import banty.com.repository.utility.NetworkUtil
+import banty.com.utility.NetworkConnectivityUtil
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -34,7 +30,7 @@ class BitcoinRepository : Repository {
     lateinit var localBitcoinRepository: LocalBitcoinRepository
 
     @Inject
-    lateinit var networkUtil: NetworkUtil
+    lateinit var networkUtil: NetworkConnectivityUtil
 
     init {
         DaggerRepositoryComponent.builder()
@@ -44,34 +40,59 @@ class BitcoinRepository : Repository {
     }
 
     override fun getMarketPrice(timespan: String): Observable<BitcoinApiResponseModel> {
-        return if (networkUtil.deviceConnectedToNetwork()) {
-            remoteBitcoinRepository.getMarketPrice(timespan)
+        return if (networkUtil.isNetworkAvailable()) {
+            val marketPrice = remoteBitcoinRepository.getMarketPrice(timespan)
+            saveMarketPriceModel(marketPrice)
+            marketPrice
         } else {
             localBitcoinRepository.getMarketPrice(timespan)
         }
     }
 
+
     override fun getAverageBlockSize(timespan: String): Observable<BitcoinApiResponseModel> {
-        return if (networkUtil.deviceConnectedToNetwork()) {
-            remoteBitcoinRepository.getAverageBlockSize(timespan)
+        return if (networkUtil.isNetworkAvailable()) {
+            val averageBlockSize = remoteBitcoinRepository.getAverageBlockSize(timespan)
+            localBitcoinRepository.saveAverageBlockSizeModel(averageBlockSize)
+            averageBlockSize
         } else {
             localBitcoinRepository.getAverageBlockSize(timespan)
         }
     }
 
     override fun getNumberOfTransactions(timespan: String): Observable<BitcoinApiResponseModel> {
-        return if (networkUtil.deviceConnectedToNetwork()) {
-            remoteBitcoinRepository.getNumberOfTransactions(timespan)
+        return if (networkUtil.isNetworkAvailable()) {
+            val numberOfTransactions = remoteBitcoinRepository.getNumberOfTransactions(timespan)
+            saveNumTransactionModel(numberOfTransactions)
+            numberOfTransactions
         } else {
             localBitcoinRepository.getNumberOfTransactions(timespan)
         }
     }
 
     override fun getMemoryPoolSize(timespan: String): Observable<BitcoinApiResponseModel> {
-        return if (networkUtil.deviceConnectedToNetwork()) {
-            remoteBitcoinRepository.getMemoryPoolSize(timespan)
+        return if (networkUtil.isNetworkAvailable()) {
+            val memoryPoolSize = remoteBitcoinRepository.getMemoryPoolSize(timespan)
+            saveMemoryPoolSizeModel(memoryPoolSize)
+            memoryPoolSize
         } else {
             localBitcoinRepository.getMemoryPoolSize(timespan)
         }
+    }
+
+    override fun saveMarketPriceModel(marketPrice: Observable<BitcoinApiResponseModel>) {
+        localBitcoinRepository.saveMarketPriceModel(marketPrice)
+    }
+
+    override fun saveAverageBlockSizeModel(averageBlockSize: Observable<BitcoinApiResponseModel>) {
+        localBitcoinRepository.saveAverageBlockSizeModel(averageBlockSize)
+    }
+
+    override fun saveNumTransactionModel(numTransactions: Observable<BitcoinApiResponseModel>) {
+        localBitcoinRepository.saveNumTransactionModel(numTransactions)
+    }
+
+    override fun saveMemoryPoolSizeModel(memoryPoolSize: Observable<BitcoinApiResponseModel>) {
+        localBitcoinRepository.saveMemoryPoolSizeModel(memoryPoolSize)
     }
 }

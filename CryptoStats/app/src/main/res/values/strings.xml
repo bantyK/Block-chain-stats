@@ -9,12 +9,14 @@
     <string name="num_transaction">Transactions per Day</string>
     <string name="mem_pool">Memory Pool Size</string>
     <string name="select_options">Select the chart to display</string>
-    <string name="label_no_network">Device Not Connected</string>
-    <string name="no_network_message">Please connect to your network and come back again to see the latest Bitcoins
-        Stats
+    <string name="label_no_network">No Network</string>
+    <string name="no_network_message">It looks like there is no network connection, Do you want to see
+        previously saved data ?
     </string>
     <string name="label_data_fetch_failed">Error</string>
     <string name="data_fetch_failed_message">Failed to fetch data from server</string>
     <string name="cancel">Cancel</string>
     <string name="try_again">Try Again</string>
+    <string name="no">No</string>
+    <string name="no_data">No data to display</string>
 </resources>

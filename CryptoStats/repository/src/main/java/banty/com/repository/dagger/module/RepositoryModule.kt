@@ -1,10 +1,13 @@
 package banty.com.repository.dagger.module
 
+import android.content.Context
+import banty.com.datamodels.ContextProvider
 import banty.com.network.retrofit.BitcoinApiService
 import banty.com.network.retrofit.RetrofitClientCreator
 import banty.com.repository.local.LocalBitcoinRepository
+import banty.com.repository.local.files.FileManager
 import banty.com.repository.remote.RemoteBitcoinRepository
-import banty.com.repository.utility.NetworkUtil
+import banty.com.utility.NetworkConnectivityUtil
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -24,12 +27,25 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideLocalBitcoinRepository(): LocalBitcoinRepository {
-        return LocalBitcoinRepository()
+    fun provideLocalBitcoinRepository(fileManager: FileManager): LocalBitcoinRepository {
+        return LocalBitcoinRepository(fileManager)
     }
 
     @Provides
-    fun provideNetworkUtil(): NetworkUtil = NetworkUtil()
+    @Singleton
+    fun provideFileManager(): FileManager {
+        return FileManager()
+    }
+
+    @Provides
+    fun provideNetworkUtil(context: Context): NetworkConnectivityUtil = NetworkConnectivityUtil(context)
+
+
+    @Provides
+    @Singleton
+    fun provideContext(): Context {
+        return ContextProvider.getContext()
+    }
 
     @Provides
     @Singleton

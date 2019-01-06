@@ -8,7 +8,8 @@ import android.util.Log
 import banty.com.cryptostats.R
 import banty.com.cryptostats.fragments.charts.ChartsFragment
 import banty.com.cryptostats.fragments.options.OptionsFragment
-import banty.com.cryptostats.utility.NetworkConnectivityUtil
+import banty.com.datamodels.CHART_MARKET_PRICE
+import banty.com.utility.NetworkConnectivityUtil
 
 /*
 * Launcher Activity
@@ -70,7 +71,8 @@ class MainActivity : AppCompatActivity(), MainActivityMVPContract.View, OptionsC
     }
 
     /*
-    * Shows the no network message and close the app when user click OK
+    * Shows the no network message and displays the previously stored data if user 
+    * selects the positive button and close the app if user selects negative option
     * */
     override fun showNoNetworkMessage() {
         Log.d(logTag, "Network popup displayed")
@@ -79,10 +81,15 @@ class MainActivity : AppCompatActivity(), MainActivityMVPContract.View, OptionsC
         builder.setMessage(getString(R.string.no_network_message))
 
         val positiveText = getString(android.R.string.ok)
-        //only one button is shown. No negative button
         builder.setPositiveButton(positiveText) { dialog, _ ->
             dialog.dismiss()
-            finish() //close the app
+            showOptionsFragment()
+        }
+
+        val negativeText = getString(R.string.no)
+        builder.setNegativeButton(negativeText) { dialog, _ ->
+            dialog.dismiss()
+            finish()
         }
         val dialog = builder.create()
         dialog.show()

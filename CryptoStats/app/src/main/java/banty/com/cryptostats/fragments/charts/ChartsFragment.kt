@@ -155,6 +155,7 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
         hideProgressBar()
         this.bitcoinData = bitCoinData
         lineChart?.data = presenter?.getChartData(bitCoinData)
+        lineChart?.setNoDataText(getString(R.string.no_data))
         lineChart?.setDescription(bitCoinData?.description)
         lineChart?.animateX(2500, Easing.EasingOption.EaseInOutQuart)
         lineChart?.setScaleEnabled(true)

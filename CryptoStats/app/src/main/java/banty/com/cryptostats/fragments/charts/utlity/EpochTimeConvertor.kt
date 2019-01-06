@@ -1,4 +1,4 @@
-package banty.com.cryptostats.utility
+package banty.com.cryptostats.fragments.charts.utlity
 
 import android.util.Log
 import java.text.SimpleDateFormat

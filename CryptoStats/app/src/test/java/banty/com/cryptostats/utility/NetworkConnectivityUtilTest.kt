@@ -3,6 +3,7 @@ package banty.com.cryptostats.utility
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import banty.com.utility.NetworkConnectivityUtil
 import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
 import org.junit.Before

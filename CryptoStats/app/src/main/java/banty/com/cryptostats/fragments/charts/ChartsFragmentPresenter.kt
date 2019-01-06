@@ -2,7 +2,7 @@ package banty.com.cryptostats.fragments.charts
 
 import android.util.Log
 import banty.com.cryptostats.fragments.charts.data.BitcoinDataProvider
-import banty.com.cryptostats.utility.convertEpochTimeToDate
+import banty.com.cryptostats.fragments.charts.utlity.convertEpochTimeToDate
 import banty.com.datamodels.days_30
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import com.github.mikephil.charting.data.Entry
@@ -65,7 +65,9 @@ class ChartsFragmentPresenter(
             .observeOn(androidScheduler)
             .subscribe({ bitCoinData ->
                 Log.d(logTag, "${bitCoinData.name}")
-                chartsFragmentView?.showChart(bitCoinData)
+                chartsFragmentView?.hideProgressBar()
+                if (!bitCoinData.values.isNullOrEmpty())
+                    chartsFragmentView?.showChart(bitCoinData)
             }, { error ->
                 Log.d(logTag, "Error : ${error.message}")
                 chartsFragmentView?.showNetworkError()

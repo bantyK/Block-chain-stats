@@ -1,5 +1,6 @@
 package banty.com.cryptostats.utility
 
+import banty.com.cryptostats.fragments.charts.utlity.convertEpochTimeToDate
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Test

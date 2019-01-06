@@ -2,7 +2,7 @@ package banty.com.cryptostats.fragments.options
 
 import banty.com.cryptostats.activity.MainActivityMVPContract
 import banty.com.cryptostats.activity.MainActivityPresenter
-import banty.com.cryptostats.utility.NetworkConnectivityUtil
+import banty.com.utility.NetworkConnectivityUtil
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock

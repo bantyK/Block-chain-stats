@@ -3,6 +3,7 @@ package banty.com.datamodels.response
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 /**
  * Created by Banty on 05/01/19.
@@ -24,7 +25,7 @@ data class BitcoinApiResponseModel(
     @SerializedName("period") val period: String?,
     @SerializedName("description") val description: String?,
     @SerializedName("values") val values: List<Values>?
-) : Parcelable {
+) : Parcelable, Serializable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -71,7 +72,7 @@ data class BitcoinApiResponseModel(
 data class Values(
     @SerializedName("x") val timeStamp: Long?,
     @SerializedName("y") val price: Float?
-) : Parcelable {
+) : Parcelable, Serializable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readValue(Double::class.java.classLoader) as? Float
