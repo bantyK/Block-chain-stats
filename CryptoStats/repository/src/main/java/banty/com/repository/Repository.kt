@@ -15,22 +15,22 @@ interface Repository {
     /*
     * Method to get the MarketPrice from Repository
     * */
-    fun getMarketPrice(timespan: String): Observable<BitcoinApiResponseModel>?
+    fun getMarketPrice(timespan: String): Observable<BitcoinApiResponseModel>
 
     /*
     * Method to get the AverageBlockSize from Repository
     * */
-    fun getAverageBlockSize(timespan: String): Observable<BitcoinApiResponseModel>?
+    fun getAverageBlockSize(timespan: String): Observable<BitcoinApiResponseModel>
 
     /*
     * Method to get the NumberOfTransactions from Repository
     * */
-    fun getNumberOfTransactions(timespan: String): Observable<BitcoinApiResponseModel>?
+    fun getNumberOfTransactions(timespan: String): Observable<BitcoinApiResponseModel>
 
     /*
     * Method to get the MemoryPoolSize from Repository
     * */
-    fun getMemoryPoolSize(timespan: String): Observable<BitcoinApiResponseModel>?
+    fun getMemoryPoolSize(timespan: String): Observable<BitcoinApiResponseModel>
 
     /*
     * Method to save the MarketPrice into Repository

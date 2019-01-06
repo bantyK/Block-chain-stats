@@ -5,4 +5,6 @@ import org.junit.Assert.*
 /**
  * Created by Banty on 07/01/19.
  */
-class LocalBitcoinRepositoryTest
+class LocalBitcoinRepositoryTest {
+
+}

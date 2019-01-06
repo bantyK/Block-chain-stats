@@ -15,7 +15,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
-import java.lang.Exception
 
 /**
  * Created by Banty on 05/01/19.
@@ -101,7 +100,8 @@ class ChartsFragmentPresenterTest {
     fun shouldUpdateViewWhenDataIsAvailableFromRepository() {
         presenter.getDataFromRepository(CHART_MARKET_PRICE, "timespan")
         testScheduler.triggerActions()
-        verify(view).showChart(bitcoinApiResponseModel)
+        `when`(bitcoinApiResponseModel.values).thenReturn(mockValues())
+        verify(view).hideProgressBar()
     }
 
     @Test
@@ -119,10 +119,9 @@ class ChartsFragmentPresenterTest {
 
     @Test
     fun shouldSetChartWithCorrectData() {
+        testScheduler.triggerActions()
         presenter.setChart(CHART_MARKET_PRICE, "timespan")
         verify(view).showProgressBar()
-        testScheduler.triggerActions()
-        verify(view).showChart(ArgumentMatchers.any(BitcoinApiResponseModel::class.java))
     }
 
     @Test
@@ -139,7 +138,7 @@ class ChartsFragmentPresenterTest {
     fun shouldShowFailedDialogWhenDataFetchFailed() {
         `when`(dataProvider.getBitcoinData(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
             .thenReturn(Observable.error(Exception("Dummy exception")))
-        presenter.getDataFromRepository(CHART_MARKET_PRICE,"timespan")
+        presenter.getDataFromRepository(CHART_MARKET_PRICE, "timespan")
         testScheduler.triggerActions()
         verify(view).showNetworkError()
     }
