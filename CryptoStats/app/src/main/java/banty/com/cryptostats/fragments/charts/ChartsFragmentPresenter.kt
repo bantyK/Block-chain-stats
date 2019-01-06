@@ -68,6 +68,7 @@ class ChartsFragmentPresenter(
                 chartsFragmentView?.showChart(bitCoinData)
             }, { error ->
                 Log.d(logTag, "Error : ${error.message}")
+                chartsFragmentView?.showNetworkError()
             })
     }
 

@@ -10,7 +10,9 @@ import banty.com.cryptostats.fragments.charts.ChartsFragment
 import banty.com.cryptostats.fragments.options.OptionsFragment
 import banty.com.cryptostats.utility.NetworkConnectivityUtil
 
-
+/*
+* Launcher Activity
+* */
 class MainActivity : AppCompatActivity(), MainActivityMVPContract.View, OptionsChangeListener {
 
     private val logTag = "OptionsActivity"
@@ -77,9 +79,10 @@ class MainActivity : AppCompatActivity(), MainActivityMVPContract.View, OptionsC
         builder.setMessage(getString(R.string.no_network_message))
 
         val positiveText = getString(android.R.string.ok)
+        //only one button is shown. No negative button
         builder.setPositiveButton(positiveText) { dialog, _ ->
             dialog.dismiss()
-            finish()
+            finish() //close the app
         }
         val dialog = builder.create()
         dialog.show()

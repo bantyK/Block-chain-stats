@@ -99,6 +99,8 @@ interface ChartsFragmentMVPContract {
        * */
         fun updateUI(model: BitcoinApiResponseModel?)
 
+        fun showNetworkError()
+
     }
 
 }

@@ -13,4 +13,8 @@
     <string name="no_network_message">Please connect to your network and come back again to see the latest Bitcoins
         Stats
     </string>
+    <string name="label_data_fetch_failed">Error</string>
+    <string name="data_fetch_failed_message">Failed to fetch data from server</string>
+    <string name="cancel">Cancel</string>
+    <string name="try_again">Try Again</string>
 </resources>

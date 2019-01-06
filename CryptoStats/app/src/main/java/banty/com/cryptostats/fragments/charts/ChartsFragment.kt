@@ -1,7 +1,9 @@
 package banty.com.cryptostats.fragments.charts
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,9 +32,9 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
 
     private val logTag = "ChartsFragment"
 
-    private lateinit var progressBar: ProgressBar
+    private var progressBar: ProgressBar? = null
 
-    private lateinit var lineChart: LineChart
+    private var lineChart: LineChart? = null
 
     private var presenter: ChartsFragmentMVPContract.Presenter? = null
 
@@ -42,11 +44,11 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
     private var bitcoinData: BitcoinApiResponseModel? = null
 
     override fun hideProgressBar() {
-        progressBar.visibility = View.GONE
+        progressBar?.visibility = View.GONE
     }
 
     override fun showProgressBar() {
-        progressBar.visibility = View.VISIBLE
+        progressBar?.visibility = View.VISIBLE
     }
 
     override fun updateUI(model: BitcoinApiResponseModel?) {
@@ -109,18 +111,18 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
     /**
      * Initialise the views
      * */
-    private fun initViews(view: View) {
-        lineChart = view.findViewById(R.id.linechart)
-        progressBar = view.findViewById(R.id.progress_bar)
-        val button30Days = view.findViewById<Button>(R.id.button_30days)
-        val button60Days = view.findViewById<Button>(R.id.button_60days)
-        val button180Days = view.findViewById<Button>(R.id.button_180days)
-        val button1year = view.findViewById<Button>(R.id.button_1year)
+    private fun initViews(view: View?) {
+        lineChart = view?.findViewById<LineChart>(R.id.linechart)
+        progressBar = view?.findViewById(R.id.progress_bar)
+        val button30Days = view?.findViewById<Button>(R.id.button_30days)
+        val button60Days = view?.findViewById<Button>(R.id.button_60days)
+        val button180Days = view?.findViewById<Button>(R.id.button_180days)
+        val button1year = view?.findViewById<Button>(R.id.button_1year)
 
-        button30Days.setOnClickListener(this)
-        button60Days.setOnClickListener(this)
-        button180Days.setOnClickListener(this)
-        button1year.setOnClickListener(this)
+        button30Days?.setOnClickListener(this)
+        button60Days?.setOnClickListener(this)
+        button180Days?.setOnClickListener(this)
+        button1year?.setOnClickListener(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -128,7 +130,7 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
         initPresenter()
         //saves the response from repository to redraw the graph on Orientation change
         if (savedInstanceState?.get(PARCEL_KEY) != null) {
-            Log.d(logTag, "Fragment redrawn, using the saved data")
+            Log.d(logTag, "Fragment redrawn, using the previously saved data")
             showChart(savedInstanceState[PARCEL_KEY] as BitcoinApiResponseModel)
         } else {
             // saved response is not present, make a call to the repository via the presenter
@@ -149,13 +151,13 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
      * Called by Presenter when chart is ready to be displayed with the the
      * required information
      * */
-    override fun showChart(bitcoinApiResponseModel: BitcoinApiResponseModel?) {
+    override fun showChart(bitCoinData: BitcoinApiResponseModel?) {
         hideProgressBar()
-        this.bitcoinData = bitcoinApiResponseModel
-        lineChart.data = presenter?.getChartData(bitcoinApiResponseModel)
-        lineChart.setDescription(bitcoinApiResponseModel?.description)
-        lineChart.animateX(2500, Easing.EasingOption.EaseInOutQuart)
-        lineChart.setScaleEnabled(true)
+        this.bitcoinData = bitCoinData
+        lineChart?.data = presenter?.getChartData(bitCoinData)
+        lineChart?.setDescription(bitCoinData?.description)
+        lineChart?.animateX(2500, Easing.EasingOption.EaseInOutQuart)
+        lineChart?.setScaleEnabled(true)
     }
 
     /*
@@ -194,5 +196,34 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
             }
         }
     }
+
+
+    /**
+     * Show network error message when data fetching is failed.
+     *
+     * Provide an option to Try again or cancel the dialog
+     * */
+    override fun showNetworkError() {
+        val activityContext: Context? = context
+        hideProgressBar()
+        if (activityContext != null) {
+            val builder = AlertDialog.Builder(activityContext)
+            builder.setTitle(getString(R.string.label_data_fetch_failed))
+            builder.setMessage(getString(R.string.data_fetch_failed_message))
+
+            val cancelText = getString(R.string.cancel)
+            builder.setNegativeButton(cancelText) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val tryAgainText = getString(R.string.try_again)
+            builder.setPositiveButton(tryAgainText) { dialog, _ ->
+                presenter?.getDataFromRepository(getChartOptionFromArgument(), days_30)
+            }
+            val dialog = builder.create()
+            dialog.show()
+        }
+    }
+
 
 }
