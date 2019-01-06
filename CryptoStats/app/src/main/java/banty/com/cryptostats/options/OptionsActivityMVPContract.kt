@@ -14,10 +14,11 @@ interface OptionsActivityMVPContract {
     }
 
     interface View {
-        fun showChartsFragment(res: BitcoinApiResponseModel)
+        fun showChartsFragment(res: BitcoinApiResponseModel?)
         fun hideChartContainer()
         fun displayChartContainer()
         fun hideProgressBar()
         fun showProgressBar()
+        fun updateUI(model: BitcoinApiResponseModel?)
     }
 }

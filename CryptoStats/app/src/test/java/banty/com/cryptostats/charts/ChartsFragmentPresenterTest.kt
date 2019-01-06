@@ -8,11 +8,15 @@ import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 
 /**
  * Created by Banty on 05/01/19.
+ *
+ * Unit test cases for ChartsFragmentPresenter
  */
 class ChartsFragmentPresenterTest {
 
@@ -30,10 +34,17 @@ class ChartsFragmentPresenterTest {
 
     lateinit var presenter: ChartsFragmentPresenter
 
+    /**
+     * Returns Mockito.any() as nullable type to avoid java.lang.IllegalStateException when
+     * null is returned.
+     */
+    fun <T> any(): T = Mockito.any<T>()
+
+
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        presenter = ChartsFragmentPresenter(view)
+        presenter = ChartsFragmentPresenter(view, mockChartCreator)
     }
 
     private val arrayList: ArrayList<Values>
@@ -80,6 +91,11 @@ class ChartsFragmentPresenterTest {
 
     @Test
     fun shouldCreateChartWithGivenXAndYValues() {
+        `when`(apiResponseModel.values).thenReturn(mockValues())
+        `when`(apiResponseModel.name).thenReturn("name")
+        `when`(mockChartCreator.createChart(any(), any(), any())).thenReturn(mockLineData)
+        presenter.setChartData(apiResponseModel)
 
+        verify(view).showChart(mockLineData)
     }
 }

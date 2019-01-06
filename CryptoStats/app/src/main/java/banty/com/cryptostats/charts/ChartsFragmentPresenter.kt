@@ -9,7 +9,7 @@ import com.github.mikephil.charting.data.LineData
  * Implementation of ChartsFragmentMVPContract.Presenter.
  * Documentation of all methods is given in the interface
  * */
-class ChartsFragmentPresenter(private val chartsFragmentView: ChartsFragmentMVPContract.View?) :
+class ChartsFragmentPresenter(private val chartsFragmentView: ChartsFragmentMVPContract.View?, private val chartCreator: ChartCreator) :
     ChartsFragmentMVPContract.Presenter {
 
     override fun getXAxisValues(bitCoinData: BitcoinApiResponseModel?): ArrayList<String> {

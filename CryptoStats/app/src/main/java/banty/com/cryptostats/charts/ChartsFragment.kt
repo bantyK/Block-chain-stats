@@ -34,7 +34,7 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View {
         * static function which will be used by the activity to create a new instance of the
         * fragment with the @param BitcoinApiResponseModel passed as bundle.
         * */
-        fun newInstance(bitcoinApiResponseModel: BitcoinApiResponseModel): ChartsFragment {
+        fun newInstance(bitcoinApiResponseModel: BitcoinApiResponseModel?): ChartsFragment {
             val args = Bundle()
             args.putParcelable(PARCEL_KEY, bitcoinApiResponseModel)
             val chartsFragment = ChartsFragment()
@@ -56,7 +56,7 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View {
      * Initializes the presenter
      * */
     private fun initPresenter() {
-        presenter = ChartsFragmentPresenter(this)
+        presenter = ChartsFragmentPresenter(this, ChartCreator())
     }
 
     /**

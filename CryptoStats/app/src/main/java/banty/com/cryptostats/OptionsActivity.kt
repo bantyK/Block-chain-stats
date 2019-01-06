@@ -10,10 +10,18 @@ import banty.com.cryptostats.charts.ChartsFragment
 import banty.com.cryptostats.options.*
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.repository.Repository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
 class OptionsActivity : AppCompatActivity(), View.OnClickListener, OptionsActivityMVPContract.View {
+    override fun updateUI(model: BitcoinApiResponseModel?) {
+        showChartsFragment(model)
+        hideProgressBar()
+        displayChartContainer()
+    }
+
     private val logTag = "OptionsActivity"
 
     private lateinit var presenter: OptionsActivityMVPContract.Presenter
@@ -33,7 +41,7 @@ class OptionsActivity : AppCompatActivity(), View.OnClickListener, OptionsActivi
         (application as BitcoinStatsApplication).getAppComponent()
             ?.injectDependencies(this)
 
-        presenter = OptionsActivityPresenter(this, repository)
+        presenter = OptionsActivityPresenter(this, repository, Schedulers.io(), AndroidSchedulers.mainThread())
 
         if (savedInstanceState == null) {
             showProgressBar()
@@ -60,7 +68,7 @@ class OptionsActivity : AppCompatActivity(), View.OnClickListener, OptionsActivi
         button1year.setOnClickListener(this)
     }
 
-    override fun showChartsFragment(res: BitcoinApiResponseModel) {
+    override fun showChartsFragment(res: BitcoinApiResponseModel?) {
         Log.d(logTag, "Show Charts Fragment")
         supportFragmentManager.beginTransaction()
             .replace(R.id.charts_fragment_container, ChartsFragment.newInstance(res))
