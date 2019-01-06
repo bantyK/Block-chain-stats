@@ -29,7 +29,7 @@ class BitcoinDataProviderImplTest {
     }
 
     @Test
-    fun shouldCallMarketApiWhenChartOptionIsMarketPrice() {
+    fun should_Call_MarketApi_When_ChartOption_Is_MarketPrice() {
         bitcoinDataProviderImpl.getBitcoinData(CHART_MARKET_PRICE, testTimeSpan)
         verify(repository).getMarketPrice(testTimeSpan)
     }
@@ -51,4 +51,12 @@ class BitcoinDataProviderImplTest {
         bitcoinDataProviderImpl.getBitcoinData(CHART_MEMORY_POOL, testTimeSpan)
         verify(repository).getMemoryPoolSize(testTimeSpan)
     }
+
+    @Test
+    fun should_Call_MarketApi_When_ChartOption_Is_Other() {
+        bitcoinDataProviderImpl.getBitcoinData("some other value", testTimeSpan)
+        verify(repository).getMarketPrice(testTimeSpan)
+    }
+
+
 }

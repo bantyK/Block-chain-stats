@@ -1,7 +1,7 @@
-package banty.com.cryptostats.fragments.charts.utility
+package banty.com.cryptostats.utility
 
-import banty.com.cryptostats.utility.convertEpochTimeToDate
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertTrue
 import org.junit.Test
 
 /**
@@ -11,5 +11,10 @@ class EpochTimeConvertorTest {
     @Test
     fun shouldReturnTimeInDDMMMFormat() {
         assertEquals("07. Dec", convertEpochTimeToDate(1544148720))
+    }
+
+    @Test
+    fun shouldReturnEmptyStringIfTimeStampIsNull() {
+        assertTrue(convertEpochTimeToDate(null).isEmpty())
     }
 }

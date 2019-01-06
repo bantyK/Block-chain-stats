@@ -15,6 +15,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
+import java.lang.Exception
 
 /**
  * Created by Banty on 05/01/19.
@@ -53,7 +54,7 @@ class ChartsFragmentPresenterTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         testScheduler = TestScheduler()
-        `when`(dataProvider.getBitcoinData(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(
+        `when`(dataProvider.getBitcoinData(ArgumentMatchers.anyString(), ArgumentMatchers.anyString())).thenReturn(
             Observable.just(
                 bitcoinApiResponseModel
             )
@@ -98,14 +99,14 @@ class ChartsFragmentPresenterTest {
 
     @Test
     fun shouldUpdateViewWhenDataIsAvailableFromRepository() {
-        presenter.getDataFromRepository(CHART_MARKET_PRICE,"timespan")
+        presenter.getDataFromRepository(CHART_MARKET_PRICE, "timespan")
         testScheduler.triggerActions()
         verify(view).showChart(bitcoinApiResponseModel)
     }
 
     @Test
     fun redrawGraphOnlyIfNewGraphIsDifferentThanCurrentGraph() {
-        presenter.handleButtonClick(CHART_MARKET_PRICE,"30days")
+        presenter.handleButtonClick(CHART_MARKET_PRICE, "30days")
         verifyNoMoreInteractions(view)
     }
 
@@ -132,5 +133,14 @@ class ChartsFragmentPresenterTest {
             presenter.getYAxisValues(apiResponseModel),
             bitcoinApiResponseModel.name
         )
+    }
+
+    @Test
+    fun shouldShowFailedDialogWhenDataFetchFailed() {
+        `when`(dataProvider.getBitcoinData(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+            .thenReturn(Observable.error(Exception("Dummy exception")))
+        presenter.getDataFromRepository(CHART_MARKET_PRICE,"timespan")
+        testScheduler.triggerActions()
+        verify(view).showNetworkError()
     }
 }
