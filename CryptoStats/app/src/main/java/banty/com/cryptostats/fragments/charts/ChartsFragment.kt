@@ -10,10 +10,10 @@ import android.widget.Button
 import android.widget.ProgressBar
 import banty.com.cryptostats.BitcoinStatsApplication
 import banty.com.cryptostats.R
-import banty.com.cryptostats.activity.days_180
-import banty.com.cryptostats.activity.days_30
-import banty.com.cryptostats.activity.days_60
-import banty.com.cryptostats.activity.year_1
+import banty.com.cryptostats.days_180
+import banty.com.cryptostats.days_30
+import banty.com.cryptostats.days_60
+import banty.com.cryptostats.year_1
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.repository.Repository
 import com.github.mikephil.charting.animation.Easing
@@ -58,13 +58,14 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
 
     companion object {
         const val PARCEL_KEY = "charts_data"
-
+        const val CHART_OPTION_KEY = "chart_option"
         /*
         * static function which will be used by the activity to create a new instance of the
         * fragment with the @param BitcoinApiResponseModel passed as bundle.
         * */
-        fun newInstance(): ChartsFragment {
+        fun newInstance(chartOption: String): ChartsFragment {
             val args = Bundle()
+            args.putString(CHART_OPTION_KEY, chartOption)
             val chartsFragment = ChartsFragment()
             chartsFragment.arguments = args
             return chartsFragment

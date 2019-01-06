@@ -12,6 +12,7 @@ interface MainActivityMVPContract {
     }
 
     interface View {
-
+        fun showOptionsFragment()
+        fun showChartsFragment(chartOption: String)
     }
 }

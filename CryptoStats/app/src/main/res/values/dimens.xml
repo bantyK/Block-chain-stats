@@ -2,4 +2,6 @@
 <resources>
     <dimen name="dimen_20DP">20dp</dimen>
     <dimen name="dimen_50DP">50dp</dimen>
+    <dimen name="dimen_16DP">16dp</dimen>
+    <dimen name="text_size_20SP">20sp</dimen>
 </resources>

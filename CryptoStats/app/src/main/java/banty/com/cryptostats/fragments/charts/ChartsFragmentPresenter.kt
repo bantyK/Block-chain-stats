@@ -1,7 +1,7 @@
 package banty.com.cryptostats.fragments.charts
 
 import android.util.Log
-import banty.com.cryptostats.activity.days_30
+import banty.com.cryptostats.days_30
 import banty.com.cryptostats.fragments.charts.utility.convertEpochTimeToDate
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.repository.Repository

@@ -8,4 +8,5 @@
     <string name="avg_block_size">Average Block Size (MB)</string>
     <string name="num_transaction">Transactions per Day</string>
     <string name="mem_pool">Memory Pool Size</string>
+    <string name="select_options">Select the chart to display</string>
 </resources>

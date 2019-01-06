@@ -3,6 +3,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+    <TextView
+            android:layout_marginTop="@dimen/dimen_20DP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_options"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:padding="@dimen/dimen_20DP"
+            android:textSize="@dimen/text_size_20SP"
+    />
+
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true">
