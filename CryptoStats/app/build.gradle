@@ -19,6 +19,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //added to mock android sdk static classes like Color
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -43,4 +48,5 @@ dependencies {
     //rxjava
     implementation "io.reactivex.rxjava2:rxandroid:$rxjava_version"
 
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
 }
