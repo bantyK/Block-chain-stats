@@ -1,5 +1,6 @@
 package banty.com.repository.local
 
+import android.os.Parcel
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.repository.Repository
 import io.reactivex.Observable

@@ -10,12 +10,9 @@ import android.widget.Button
 import android.widget.ProgressBar
 import banty.com.cryptostats.BitcoinStatsApplication
 import banty.com.cryptostats.R
-import banty.com.cryptostats.days_180
-import banty.com.cryptostats.days_30
-import banty.com.cryptostats.days_60
-import banty.com.cryptostats.year_1
+import banty.com.cryptostats.fragments.charts.data.BitcoinDataProvider
+import banty.com.datamodels.*
 import banty.com.datamodels.response.BitcoinApiResponseModel
-import banty.com.repository.Repository
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -40,7 +37,7 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
     private var presenter: ChartsFragmentMVPContract.Presenter? = null
 
     @Inject
-    lateinit var repository: Repository
+    lateinit var dataProvider: BitcoinDataProvider
 
     private var bitcoinData: BitcoinApiResponseModel? = null
 
@@ -103,7 +100,7 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
         presenter = ChartsFragmentPresenter(
             this,
             ChartCreator(),
-            repository,
+            dataProvider,
             Schedulers.io(),
             AndroidSchedulers.mainThread()
         )
@@ -136,8 +133,16 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
         } else {
             // saved response is not present, make a call to the repository via the presenter
             Log.d(logTag, "New instance of the fragment is created, fetch the new data")
-            presenter?.setChart(days_30)
+            presenter?.setChart(getChartOptionFromArgument(), days_30)
         }
+    }
+
+    /*
+    * Get the chart option sent by MainActivity.
+    * Returns CHART_MARKET_PRICE by default if no chart value is passed
+    * */
+    private fun getChartOptionFromArgument(): String {
+        return arguments?.getString(CHART_OPTION_KEY) ?: CHART_MARKET_PRICE
     }
 
     /**
@@ -169,23 +174,23 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
         when (v?.id) {
             R.id.button_30days -> {
                 Log.d(logTag, "handle click for 30 days")
-                presenter?.handleButtonClick(days_30)
+                presenter?.handleButtonClick(getChartOptionFromArgument(), days_30)
             }
             R.id.button_60days -> {
                 Log.d(logTag, "handle click for 60 days")
-                presenter?.handleButtonClick(days_60)
+                presenter?.handleButtonClick(getChartOptionFromArgument(), days_60)
             }
             R.id.button_180days -> {
                 Log.d(logTag, "handle click for 180 days")
-                presenter?.handleButtonClick(days_180)
+                presenter?.handleButtonClick(getChartOptionFromArgument(), days_180)
             }
             R.id.button_1year -> {
                 Log.d(logTag, "handle click for 1 year")
-                presenter?.handleButtonClick(year_1)
+                presenter?.handleButtonClick(getChartOptionFromArgument(), year_1)
             }
             else -> {
                 Log.d(logTag, "default case : 30 days")
-                presenter?.handleButtonClick(days_30)
+                presenter?.handleButtonClick(getChartOptionFromArgument(), days_30)
             }
         }
     }

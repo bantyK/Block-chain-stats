@@ -1,10 +1,10 @@
 package banty.com.cryptostats.fragments.charts
 
 import android.util.Log
-import banty.com.cryptostats.days_30
+import banty.com.cryptostats.fragments.charts.data.BitcoinDataProvider
 import banty.com.cryptostats.fragments.charts.utility.convertEpochTimeToDate
+import banty.com.datamodels.days_30
 import banty.com.datamodels.response.BitcoinApiResponseModel
-import banty.com.repository.Repository
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import io.reactivex.Scheduler
@@ -17,7 +17,7 @@ import io.reactivex.Scheduler
 class ChartsFragmentPresenter(
     private val chartsFragmentView: ChartsFragmentMVPContract.View?,
     private val chartCreator: ChartCreator,
-    private val repository: Repository,
+    private val repository: BitcoinDataProvider,
     private val ioScheduler: Scheduler?,
     private val androidScheduler: Scheduler?
 
@@ -52,19 +52,19 @@ class ChartsFragmentPresenter(
     /*
     * Sets the properties of the chart
     * */
-    override fun setChart(timespan: String) {
+    override fun setChart(chartOption: String, timespan: String) {
         chartsFragmentView?.showProgressBar()
-        getDataFromRepository(timespan)
+        getDataFromRepository(chartOption, timespan)
     }
 
     private var currentTimeSpan = days_30
 
-    override fun getDataFromRepository(timespan: String) {
-        repository.getMemoryPoolSize(timespan = timespan)
+    override fun getDataFromRepository(chartOption: String, timespan: String) {
+        repository.getBitcoinData(chartOption, timespan)
             .subscribeOn(ioScheduler)
             .observeOn(androidScheduler)
             .subscribe({ bitCoinData ->
-                Log.d(logTag, "${bitCoinData.values?.size}")
+                Log.d(logTag, "${bitCoinData.name}")
                 chartsFragmentView?.showChart(bitCoinData)
             }, { error ->
                 Log.d(logTag, "Error : ${error.message}")
@@ -80,10 +80,10 @@ class ChartsFragmentPresenter(
         return !timespan.contentEquals(currentTimeSpan)
     }
 
-    override fun handleButtonClick(timespan: String) {
+    override fun handleButtonClick(chartOption: String, timespan: String) {
         if (currentTimeSpanIsDifferentThan(timespan)) {
             chartsFragmentView?.showProgressBar()
-            getDataFromRepository(timespan)
+            getDataFromRepository(chartOption, timespan)
             currentTimeSpan = timespan
         }
     }

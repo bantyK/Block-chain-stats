@@ -47,7 +47,7 @@ interface ChartsFragmentMVPContract {
          * Fetches the data from the repository. Passes in the mandatory parameter @param timespan
          * to customise the volume of data to be fetched.
          * */
-        fun getDataFromRepository(timespan: String)
+        fun getDataFromRepository(chartOption: String, timespan: String)
 
         /**
          * Helper function to avoid redrawing the same graph in case user clicks on the
@@ -63,14 +63,14 @@ interface ChartsFragmentMVPContract {
          * It uses the currentTimeSpanIsDifferentThan method to find out if a new graph needs to be drawn,
          * and makes the call to repository to fetch the new data
          * */
-        fun handleButtonClick(timespan: String)
+        fun handleButtonClick(chartOption: String, timespan: String)
 
         /**
          * View will call this method if bitcoinApiResponseModel is not present, to fetch new data
          * passing the @param timestamp. Presenter will then make a call to repository and fetches the
          * data to display chart
          * */
-        fun setChart(timespan: String)
+        fun setChart(chartOption: String, timespan: String)
 
     }
 

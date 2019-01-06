@@ -1,5 +1,9 @@
 package banty.com.repository
 
+import banty.com.datamodels.CHART_AVERAGE_BLOCK_SIZE
+import banty.com.datamodels.CHART_MARKET_PRICE
+import banty.com.datamodels.CHART_MEMORY_POOL
+import banty.com.datamodels.CHART_NUM_TRANSACTION
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.repository.dagger.component.DaggerRepositoryComponent
 import banty.com.repository.dagger.module.RepositoryModule

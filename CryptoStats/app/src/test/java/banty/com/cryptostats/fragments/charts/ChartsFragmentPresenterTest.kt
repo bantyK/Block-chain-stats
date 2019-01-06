@@ -1,10 +1,10 @@
 package banty.com.cryptostats.fragments.charts
 
+import banty.com.cryptostats.fragments.charts.data.BitcoinDataProvider
 import banty.com.cryptostats.fragments.charts.utility.convertEpochTimeToDate
+import banty.com.datamodels.CHART_MARKET_PRICE
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.datamodels.response.Values
-import banty.com.repository.Repository
-import com.github.mikephil.charting.data.LineData
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
 import junit.framework.Assert.assertEquals
@@ -33,7 +33,7 @@ class ChartsFragmentPresenterTest {
     lateinit var mockChartCreator: ChartCreator
 
     @Mock
-    lateinit var repository: Repository
+    lateinit var dataProvider: BitcoinDataProvider
 
     lateinit var presenter: ChartsFragmentPresenter
 
@@ -53,12 +53,12 @@ class ChartsFragmentPresenterTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         testScheduler = TestScheduler()
-        `when`(repository.getMemoryPoolSize(ArgumentMatchers.anyString())).thenReturn(
+        `when`(dataProvider.getBitcoinData(ArgumentMatchers.anyString(),ArgumentMatchers.anyString())).thenReturn(
             Observable.just(
                 bitcoinApiResponseModel
             )
         )
-        presenter = ChartsFragmentPresenter(view, mockChartCreator, repository, testScheduler, testScheduler)
+        presenter = ChartsFragmentPresenter(view, mockChartCreator, dataProvider, testScheduler, testScheduler)
     }
 
     private val arrayList: ArrayList<Values>
@@ -98,27 +98,27 @@ class ChartsFragmentPresenterTest {
 
     @Test
     fun shouldUpdateViewWhenDataIsAvailableFromRepository() {
-        presenter.getDataFromRepository("timespan")
+        presenter.getDataFromRepository(CHART_MARKET_PRICE,"timespan")
         testScheduler.triggerActions()
         verify(view).showChart(bitcoinApiResponseModel)
     }
 
     @Test
     fun redrawGraphOnlyIfNewGraphIsDifferentThanCurrentGraph() {
-        presenter.handleButtonClick("30days")
+        presenter.handleButtonClick(CHART_MARKET_PRICE,"30days")
         verifyNoMoreInteractions(view)
     }
 
     @Test
     fun shouldUpdateGraphIfPreviousGraphIsDifferentFromCurrentGraph() {
-        presenter.handleButtonClick("some_other_timespan")
+        presenter.handleButtonClick(CHART_MARKET_PRICE, "some_other_timespan")
         testScheduler.triggerActions()
         verify(view).showProgressBar()
     }
 
     @Test
     fun shouldSetChartWithCorrectData() {
-        presenter.setChart("timespan")
+        presenter.setChart(CHART_MARKET_PRICE, "timespan")
         verify(view).showProgressBar()
         testScheduler.triggerActions()
         verify(view).showChart(ArgumentMatchers.any(BitcoinApiResponseModel::class.java))

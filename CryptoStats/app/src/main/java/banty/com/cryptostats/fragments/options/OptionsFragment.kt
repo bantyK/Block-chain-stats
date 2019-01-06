@@ -10,6 +10,10 @@ import android.widget.Button
 import banty.com.cryptostats.*
 import banty.com.cryptostats.activity.MainActivity
 import banty.com.cryptostats.activity.OptionsChangeListener
+import banty.com.datamodels.CHART_AVERAGE_BLOCK_SIZE
+import banty.com.datamodels.CHART_MARKET_PRICE
+import banty.com.datamodels.CHART_MEMORY_POOL
+import banty.com.datamodels.CHART_NUM_TRANSACTION
 
 /**
  * Created by Banty on 06/01/19.

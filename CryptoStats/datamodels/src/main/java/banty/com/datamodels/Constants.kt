@@ -1,4 +1,4 @@
-package banty.com.cryptostats
+package banty.com.datamodels
 
 /**
  * Created by Banty on 05/01/19.
