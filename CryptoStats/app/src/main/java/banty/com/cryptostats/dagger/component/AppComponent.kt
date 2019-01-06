@@ -1,7 +1,8 @@
 package banty.com.cryptostats.dagger.component
 
-import banty.com.cryptostats.OptionsActivity
+import banty.com.cryptostats.activity.MainActivity
 import banty.com.cryptostats.dagger.modules.AppModule
+import banty.com.cryptostats.fragments.charts.ChartsFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -13,5 +14,5 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
-    fun injectDependencies(target: OptionsActivity)
+    fun injectDependencies(target: ChartsFragment)
 }

@@ -1,4 +1,4 @@
-package banty.com.cryptostats.charts
+package banty.com.cryptostats.fragments.charts
 
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import com.github.mikephil.charting.data.Entry
@@ -41,11 +41,13 @@ interface ChartsFragmentMVPContract {
          * Uses the getXAxisValues and getYAxisValues functions to plot the graph axis
          * Uses the properties of LineDataSet provided by MPAndroidChart to customise the graph
          */
-        fun setChartData(bitCoinData: BitcoinApiResponseModel?)
 
-        /**
-         * Returns the description for the chart from the @param BitcoinApiResponseModel*/
-        fun getDescription(bitCoinData: BitcoinApiResponseModel?): String?
+
+        fun getDataFromRepository(timespan: String)
+        fun currentTimeSpanIsDifferentThan(timespan: String): Boolean
+        fun handleButtonClick(timespan: String)
+
+        fun setChart(timespan: String)
     }
 
     // Interface that will define the View of ChartsFragment
@@ -55,7 +57,11 @@ interface ChartsFragmentMVPContract {
          * After calculating the properties of the graph, presenter will call this method of view passing the @param LineData object
          * which contains config to render the graph in the fragment UI.
          * */
-        fun showChart(data: LineData)
+        fun showChart(data: LineData, description: String?)
+
+        fun hideProgressBar()
+        fun showProgressBar()
+        fun updateUI(model: BitcoinApiResponseModel?)
 
     }
 

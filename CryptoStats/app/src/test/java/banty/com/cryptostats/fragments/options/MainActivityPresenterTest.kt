@@ -1,5 +1,7 @@
-package banty.com.cryptostats.options
+package banty.com.cryptostats.fragments.options
 
+import banty.com.cryptostats.activity.MainActivityMVPContract
+import banty.com.cryptostats.activity.MainActivityPresenter
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.repository.Repository
 import io.reactivex.Observable
@@ -14,18 +16,18 @@ import org.mockito.MockitoAnnotations
 /**
  * Created by Banty on 06/01/19.
  */
-class OptionsActivityPresenterTest {
+class MainActivityPresenterTest {
 
     @Mock
     lateinit var repository: Repository
 
     @Mock
-    lateinit var view: OptionsActivityMVPContract.View
+    lateinit var view: MainActivityMVPContract.View
 
     @Mock
     lateinit var bitcoinApiResponseModel: BitcoinApiResponseModel
 
-    lateinit var optionsActivityPresenter: OptionsActivityPresenter
+    lateinit var mainActivityPresenter: MainActivityPresenter
 
     lateinit var testScheduler: TestScheduler
 
@@ -34,25 +36,26 @@ class OptionsActivityPresenterTest {
         MockitoAnnotations.initMocks(this)
         testScheduler = TestScheduler()
         `when`(repository.getMemoryPoolSize(ArgumentMatchers.anyString())).thenReturn(Observable.just(bitcoinApiResponseModel))
-        optionsActivityPresenter = OptionsActivityPresenter(view, repository, testScheduler, testScheduler)
+        mainActivityPresenter =
+                MainActivityPresenter(view, repository, testScheduler, testScheduler)
     }
 
     @Test
     fun shouldUpdateViewWhenDataIsAvailableFromRepository() {
-        optionsActivityPresenter.getDataFromRepository("timespan")
+        mainActivityPresenter.getDataFromRepository("timespan")
         testScheduler.triggerActions()
         verify(view).updateUI(bitcoinApiResponseModel)
     }
 
     @Test
     fun redrawGraphOnlyIfNewGraphIsDifferentThanCurrentGraph() {
-        optionsActivityPresenter.handleButtonClick("30days")
+        mainActivityPresenter.handleButtonClick("30days")
         verifyNoMoreInteractions(view)
     }
 
     @Test
     fun shouldUpdateGraphIfPreviousGraphIsDifferentFromCurrentGraph() {
-        optionsActivityPresenter.handleButtonClick("some_other_timespan")
+        mainActivityPresenter.handleButtonClick("some_other_timespan")
         testScheduler.triggerActions()
         verify(view).hideChartContainer()
         verify(view).showProgressBar()

@@ -1,4 +1,4 @@
-package banty.com.cryptostats.options
+package banty.com.cryptostats.activity
 
 /**
  * Created by Banty on 05/01/19.

@@ -1,6 +1,6 @@
-package banty.com.cryptostats.charts
+package banty.com.cryptostats.fragments.charts
 
-import banty.com.cryptostats.charts.utility.convertEpochTimeToDate
+import banty.com.cryptostats.fragments.charts.utility.convertEpochTimeToDate
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.datamodels.response.Values
 import com.github.mikephil.charting.data.LineData

@@ -1,7 +1,6 @@
-package banty.com.cryptostats.charts
+package banty.com.cryptostats.fragments.charts
 
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.utils.Utils
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 import java.util.*

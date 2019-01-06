@@ -4,9 +4,58 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <LinearLayout
+            android:id="@+id/timeframe_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100"
+            android:padding="16dp"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/button_30days"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_50DP"
+                android:layout_weight="25"
+                style="@style/Widget.AppCompat.Button"
+                android:text="@string/thirty_days"/>
+        <Button
+                android:id="@+id/button_60days"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_50DP"
+                android:layout_weight="25"
+                style="@style/Widget.AppCompat.Button"
+                android:text="@string/sixty_days"/>
+        <Button
+                android:id="@+id/button_180days"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_50DP"
+                android:layout_weight="25"
+                android:textSize="13sp"
+                style="@style/Widget.AppCompat.Button"
+                android:text="@string/hundred_eighty_days"/>
+        <Button
+                android:id="@+id/button_1year"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_50DP"
+                android:layout_weight="25"
+                style="@style/Widget.AppCompat.Button"
+                android:text="@string/one_year"/>
+    </LinearLayout>
+
+    <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/colorAccent"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
     <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/linechart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
 </LinearLayout>

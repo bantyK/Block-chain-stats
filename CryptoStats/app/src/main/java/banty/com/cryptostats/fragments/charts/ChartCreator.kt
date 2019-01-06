@@ -1,4 +1,4 @@
-package banty.com.cryptostats.charts
+package banty.com.cryptostats.fragments.charts
 
 import android.graphics.Color
 import com.github.mikephil.charting.data.Entry

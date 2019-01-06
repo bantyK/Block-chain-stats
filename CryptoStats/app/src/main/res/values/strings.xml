@@ -4,4 +4,8 @@
     <string name="sixty_days">60 days</string>
     <string name="hundred_eighty_days">180 days</string>
     <string name="one_year">1 year</string>
+    <string name="market_price">MARKET PRICE (USD)</string>
+    <string name="avg_block_size">Average Block Size (MB)</string>
+    <string name="num_transaction">Transactions per Day</string>
+    <string name="mem_pool">Memory Pool Size</string>
 </resources>
