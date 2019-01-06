@@ -41,13 +41,37 @@ interface ChartsFragmentMVPContract {
          * Uses the getXAxisValues and getYAxisValues functions to plot the graph axis
          * Uses the properties of LineDataSet provided by MPAndroidChart to customise the graph
          */
-
-
-        fun getDataFromRepository(timespan: String)
-        fun currentTimeSpanIsDifferentThan(timespan: String): Boolean
-        fun handleButtonClick(timespan: String)
-        fun setChart(timespan: String)
         fun getChartData(bitCoinData: BitcoinApiResponseModel?): LineData
+
+        /**
+         * Fetches the data from the repository. Passes in the mandatory parameter @param timespan
+         * to customise the volume of data to be fetched.
+         * */
+        fun getDataFromRepository(timespan: String)
+
+        /**
+         * Helper function to avoid redrawing the same graph in case user clicks on the
+         * same button twice. If user clicks on the button to show the graph which is currently
+         * displayed in the screen then presenter will not make the same api call gain.
+         *
+         * Every time new graph is displayed, the currentTimestamp variable in the presenter is updated
+         * */
+        fun currentTimeSpanIsDifferentThan(timespan: String): Boolean
+
+        /**
+         * View delegates the click handling of time stamp button to presenter via this method
+         * It uses the currentTimeSpanIsDifferentThan method to find out if a new graph needs to be drawn,
+         * and makes the call to repository to fetch the new data
+         * */
+        fun handleButtonClick(timespan: String)
+
+        /**
+         * View will call this method if bitcoinApiResponseModel is not present, to fetch new data
+         * passing the @param timestamp. Presenter will then make a call to repository and fetches the
+         * data to display chart
+         * */
+        fun setChart(timespan: String)
+
     }
 
     // Interface that will define the View of ChartsFragment
@@ -59,8 +83,20 @@ interface ChartsFragmentMVPContract {
          * */
         fun showChart(bitCoinData: BitcoinApiResponseModel?)
 
+        /*
+        * Method to hide the progress bar
+        * */
         fun hideProgressBar()
+
+        /*
+        * Method to show the progress bar
+        * */
         fun showProgressBar()
+
+        /*
+       * Method for the presenter to call when data fetching is complete and chart is ready to be drawn in the UI
+       * passes the @param model which is the response obtained from the repository
+       * */
         fun updateUI(model: BitcoinApiResponseModel?)
 
     }

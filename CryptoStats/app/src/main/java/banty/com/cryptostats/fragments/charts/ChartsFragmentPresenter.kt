@@ -11,7 +11,8 @@ import io.reactivex.Scheduler
 
 /**
  * Implementation of ChartsFragmentMVPContract.Presenter.
- * Documentation of all methods is given in the interface
+ *
+ * Documentation of all methods is given in the interface. See ChartsFragmentMVPContract
  * */
 class ChartsFragmentPresenter(
     private val chartsFragmentView: ChartsFragmentMVPContract.View?,

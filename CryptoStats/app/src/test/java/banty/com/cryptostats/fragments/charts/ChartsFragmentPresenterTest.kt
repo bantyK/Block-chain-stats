@@ -33,9 +33,6 @@ class ChartsFragmentPresenterTest {
     lateinit var mockChartCreator: ChartCreator
 
     @Mock
-    lateinit var mockLineData: LineData
-
-    @Mock
     lateinit var repository: Repository
 
     lateinit var presenter: ChartsFragmentPresenter

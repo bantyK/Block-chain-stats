@@ -30,7 +30,19 @@ import javax.inject.Inject
  * Uses MPAndroidChart library for displaying the charts : https://github.com/PhilJay/MPAndroidChart
  */
 class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickListener {
+
+    private val logTag = "ChartsFragment"
+
     private lateinit var progressBar: ProgressBar
+
+    private lateinit var lineChart: LineChart
+
+    private var presenter: ChartsFragmentMVPContract.Presenter? = null
+
+    @Inject
+    lateinit var repository: Repository
+
+    private var bitcoinData: BitcoinApiResponseModel? = null
 
     override fun hideProgressBar() {
         progressBar.visibility = View.GONE
@@ -44,18 +56,6 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
         hideProgressBar()
     }
 
-
-    private val logTag = "ChartsFragment"
-
-    private lateinit var lineChart: LineChart
-
-    private var presenter: ChartsFragmentMVPContract.Presenter? = null
-
-    @Inject
-    lateinit var repository: Repository
-
-    private var bitcoinData: BitcoinApiResponseModel? = null
-
     companion object {
         const val PARCEL_KEY = "charts_data"
 
@@ -65,7 +65,6 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
         * */
         fun newInstance(): ChartsFragment {
             val args = Bundle()
-//            args.putParcelable(PARCEL_KEY, bitcoinApiResponseModel)
             val chartsFragment = ChartsFragment()
             chartsFragment.arguments = args
             return chartsFragment
@@ -86,13 +85,18 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
         retainInstance = true
     }
 
+    /*
+    * Inject the repository via dagger 2*/
     private fun initRepository() {
         (activity?.application as BitcoinStatsApplication).getAppComponent()
             ?.injectDependencies(this)
     }
 
     /**
-     * Initializes the presenter
+     * Initialize the presenter
+     *
+     * The Schedulers required by RxJava in presenter as passed as a dependency so that it can
+     * be tested via unit test. See ChartsFragmentPresenterTest for the tests
      * */
     private fun initPresenter() {
         presenter = ChartsFragmentPresenter(
@@ -105,7 +109,7 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
     }
 
     /**
-     * Intializes the views
+     * Initialise the views
      * */
     private fun initViews(view: View) {
         lineChart = view.findViewById(R.id.linechart)
@@ -124,10 +128,12 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initRepository()
         initPresenter()
+        //saves the response from repository to redraw the graph on Orientation change
         if (savedInstanceState?.get(PARCEL_KEY) != null) {
             Log.d(logTag, "Fragment redrawn, using the saved data")
             showChart(savedInstanceState[PARCEL_KEY] as BitcoinApiResponseModel)
         } else {
+            // saved response is not present, make a call to the repository via the presenter
             Log.d(logTag, "New instance of the fragment is created, fetch the new data")
             presenter?.setChart(days_30)
         }
@@ -146,11 +152,18 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
         lineChart.setScaleEnabled(true)
     }
 
+    /*
+    * API response from repository is saved in the bundle. This is used to redraw the graph when OS kills and redraw the UI on
+    * orientation change. This saves an extra API call which would have been made whenever device orientation changes.
+    * */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(PARCEL_KEY, bitcoinData)
     }
 
+    /*
+    * onClick handler for the time span buttons, changes the graph according to the duration selected by the user
+    * */
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.button_30days -> {

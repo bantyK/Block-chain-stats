@@ -14,5 +14,4 @@ class MainActivityPresenter(
 
     private val logTag = "OptionsPresenter"
 
-
 }

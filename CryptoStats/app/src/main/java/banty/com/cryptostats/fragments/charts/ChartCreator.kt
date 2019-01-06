@@ -8,6 +8,9 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
 /**
  * Created by Banty on 05/01/19.
+ *
+ * A helper class to create the LineData object loaded with information from bitcoin response model to display
+ * the chart.
  */
 class ChartCreator {
     fun createChart(xValues: List<String>, yValues: List<Entry>, name: String?): LineData {

@@ -6,8 +6,8 @@ import java.util.*
 
 /**
  * Created by Banty on 05/01/19.
+ * Returns the time in the format DD. MMM from epoch time passed as a parameter
  */
-// Returns the time in the format DD. MMM from epoch time passed as a parameter
 fun convertEpochTimeToDate(timestamp: Long?): String {
     if (timestamp != null) {
         Log.d("Timestamp", "Timestamp : $timestamp")
