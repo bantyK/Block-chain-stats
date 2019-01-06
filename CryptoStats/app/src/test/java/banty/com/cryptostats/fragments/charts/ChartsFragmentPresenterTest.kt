@@ -3,14 +3,17 @@ package banty.com.cryptostats.fragments.charts
 import banty.com.cryptostats.fragments.charts.utility.convertEpochTimeToDate
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.datamodels.response.Values
+import banty.com.repository.Repository
 import com.github.mikephil.charting.data.LineData
+import io.reactivex.Observable
+import io.reactivex.schedulers.TestScheduler
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 /**
@@ -32,7 +35,15 @@ class ChartsFragmentPresenterTest {
     @Mock
     lateinit var mockLineData: LineData
 
+    @Mock
+    lateinit var repository: Repository
+
     lateinit var presenter: ChartsFragmentPresenter
+
+    lateinit var testScheduler: TestScheduler
+
+    @Mock
+    lateinit var bitcoinApiResponseModel: BitcoinApiResponseModel
 
     /**
      * Returns Mockito.any() as nullable type to avoid java.lang.IllegalStateException when
@@ -44,7 +55,13 @@ class ChartsFragmentPresenterTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        presenter = ChartsFragmentPresenter(view, mockChartCreator)
+        testScheduler = TestScheduler()
+        `when`(repository.getMemoryPoolSize(ArgumentMatchers.anyString())).thenReturn(
+            Observable.just(
+                bitcoinApiResponseModel
+            )
+        )
+        presenter = ChartsFragmentPresenter(view, mockChartCreator, repository, testScheduler, testScheduler)
     }
 
     private val arrayList: ArrayList<Values>
@@ -83,19 +100,40 @@ class ChartsFragmentPresenterTest {
     }
 
     @Test
-    fun shouldReturnCorrectDescription() {
-        `when`(apiResponseModel.description).thenReturn("Mock Description")
-        val description = presenter.getDescription(apiResponseModel)
-        assertEquals("Mock Description", description)
+    fun shouldUpdateViewWhenDataIsAvailableFromRepository() {
+        presenter.getDataFromRepository("timespan")
+        testScheduler.triggerActions()
+        verify(view).showChart(bitcoinApiResponseModel)
     }
 
     @Test
-    fun shouldCreateChartWithGivenXAndYValues() {
-        `when`(apiResponseModel.values).thenReturn(mockValues())
-        `when`(apiResponseModel.name).thenReturn("name")
-        `when`(mockChartCreator.createChart(any(), any(), any())).thenReturn(mockLineData)
-        presenter.setChartData(apiResponseModel)
+    fun redrawGraphOnlyIfNewGraphIsDifferentThanCurrentGraph() {
+        presenter.handleButtonClick("30days")
+        verifyNoMoreInteractions(view)
+    }
 
-        verify(view).showChart(mockLineData)
+    @Test
+    fun shouldUpdateGraphIfPreviousGraphIsDifferentFromCurrentGraph() {
+        presenter.handleButtonClick("some_other_timespan")
+        testScheduler.triggerActions()
+        verify(view).showProgressBar()
+    }
+
+    @Test
+    fun shouldSetChartWithCorrectData() {
+        presenter.setChart("timespan")
+        verify(view).showProgressBar()
+        testScheduler.triggerActions()
+        verify(view).showChart(ArgumentMatchers.any(BitcoinApiResponseModel::class.java))
+    }
+
+    @Test
+    fun shouldConstructChartWithCorrectDataFromResponseModel() {
+        presenter.getChartData(bitcoinApiResponseModel)
+        verify(mockChartCreator).createChart(
+            presenter.getXAxisValues(apiResponseModel),
+            presenter.getYAxisValues(apiResponseModel),
+            bitcoinApiResponseModel.name
+        )
     }
 }
