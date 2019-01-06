@@ -46,8 +46,8 @@ interface ChartsFragmentMVPContract {
         fun getDataFromRepository(timespan: String)
         fun currentTimeSpanIsDifferentThan(timespan: String): Boolean
         fun handleButtonClick(timespan: String)
-
         fun setChart(timespan: String)
+        fun getChartData(bitCoinData: BitcoinApiResponseModel?): LineData
     }
 
     // Interface that will define the View of ChartsFragment
@@ -57,7 +57,7 @@ interface ChartsFragmentMVPContract {
          * After calculating the properties of the graph, presenter will call this method of view passing the @param LineData object
          * which contains config to render the graph in the fragment UI.
          * */
-        fun showChart(data: LineData, description: String?)
+        fun showChart(bitCoinData: BitcoinApiResponseModel?)
 
         fun hideProgressBar()
         fun showProgressBar()

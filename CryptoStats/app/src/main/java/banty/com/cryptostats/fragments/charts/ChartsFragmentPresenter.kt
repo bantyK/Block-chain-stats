@@ -22,7 +22,6 @@ class ChartsFragmentPresenter(
 
 ) : ChartsFragmentMVPContract.Presenter {
 
-
     private val logTag = "ChartsPresenter"
 
     override fun getXAxisValues(bitCoinData: BitcoinApiResponseModel?): ArrayList<String> {
@@ -53,6 +52,7 @@ class ChartsFragmentPresenter(
     * Sets the properties of the chart
     * */
     override fun setChart(timespan: String) {
+        chartsFragmentView?.showProgressBar()
         getDataFromRepository(timespan)
     }
 
@@ -64,13 +64,14 @@ class ChartsFragmentPresenter(
             .observeOn(androidScheduler)
             .subscribe({ bitCoinData ->
                 Log.d(logTag, "${bitCoinData.values?.size}")
-                chartsFragmentView?.showChart(getChartData(bitCoinData), bitCoinData?.description)
+                chartsFragmentView?.showChart(bitCoinData)
             }, { error ->
                 Log.d(logTag, "Error : ${error.message}")
             })
     }
 
-    private fun getChartData(bitCoinData: BitcoinApiResponseModel?): LineData =
+
+    override fun getChartData(bitCoinData: BitcoinApiResponseModel?): LineData =
         chartCreator.createChart(getXAxisValues(bitCoinData), getYAxisValues(bitCoinData), bitCoinData?.name)
 
 

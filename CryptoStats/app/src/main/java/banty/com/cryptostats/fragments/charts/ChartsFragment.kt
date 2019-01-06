@@ -18,7 +18,6 @@ import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.repository.Repository
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.LineData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -54,6 +53,8 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
 
     @Inject
     lateinit var repository: Repository
+
+    private var bitcoinData: BitcoinApiResponseModel? = null
 
     companion object {
         const val PARCEL_KEY = "charts_data"
@@ -123,23 +124,31 @@ class ChartsFragment : Fragment(), ChartsFragmentMVPContract.View, View.OnClickL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initRepository()
         initPresenter()
-        presenter?.setChart(days_30)
+        if (savedInstanceState?.get(PARCEL_KEY) != null) {
+            Log.d(logTag, "Fragment redrawn, using the saved data")
+            showChart(savedInstanceState[PARCEL_KEY] as BitcoinApiResponseModel)
+        } else {
+            Log.d(logTag, "New instance of the fragment is created, fetch the new data")
+            presenter?.setChart(days_30)
+        }
     }
 
     /**
      * Called by Presenter when chart is ready to be displayed with the the
      * required information
      * */
-    override fun showChart(data: LineData, description: String?) {
+    override fun showChart(bitcoinApiResponseModel: BitcoinApiResponseModel?) {
         hideProgressBar()
-        lineChart.data = data
-        lineChart.setDescription(description)
+        this.bitcoinData = bitcoinApiResponseModel
+        lineChart.data = presenter?.getChartData(bitcoinApiResponseModel)
+        lineChart.setDescription(bitcoinApiResponseModel?.description)
         lineChart.animateX(2500, Easing.EasingOption.EaseInOutQuart)
         lineChart.setScaleEnabled(true)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putParcelable(PARCEL_KEY, bitcoinData)
     }
 
     override fun onClick(v: View?) {
