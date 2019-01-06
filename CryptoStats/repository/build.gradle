@@ -41,6 +41,8 @@ dependencies {
 
     implementation project(':network')
     implementation project(':datamodels')
+
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
 }
 repositories {
     mavenCentral()
