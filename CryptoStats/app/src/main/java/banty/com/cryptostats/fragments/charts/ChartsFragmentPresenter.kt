@@ -2,7 +2,7 @@ package banty.com.cryptostats.fragments.charts
 
 import android.util.Log
 import banty.com.cryptostats.fragments.charts.data.BitcoinDataProvider
-import banty.com.cryptostats.fragments.charts.utility.convertEpochTimeToDate
+import banty.com.cryptostats.utility.convertEpochTimeToDate
 import banty.com.datamodels.days_30
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import com.github.mikephil.charting.data.Entry

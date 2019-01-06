@@ -1,7 +1,7 @@
 package banty.com.cryptostats.fragments.charts
 
 import banty.com.cryptostats.fragments.charts.data.BitcoinDataProvider
-import banty.com.cryptostats.fragments.charts.utility.convertEpochTimeToDate
+import banty.com.cryptostats.utility.convertEpochTimeToDate
 import banty.com.datamodels.CHART_MARKET_PRICE
 import banty.com.datamodels.response.BitcoinApiResponseModel
 import banty.com.datamodels.response.Values

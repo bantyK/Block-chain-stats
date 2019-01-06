@@ -2,10 +2,13 @@ package banty.com.cryptostats.activity
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import banty.com.cryptostats.R
 import banty.com.cryptostats.fragments.charts.ChartsFragment
 import banty.com.cryptostats.fragments.options.OptionsFragment
+import banty.com.cryptostats.utility.NetworkConnectivityUtil
 
 
 class MainActivity : AppCompatActivity(), MainActivityMVPContract.View, OptionsChangeListener {
@@ -14,14 +17,18 @@ class MainActivity : AppCompatActivity(), MainActivityMVPContract.View, OptionsC
 
     private var presenter: MainActivityMVPContract.Presenter? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         if (savedInstanceState == null) {
-            presenter = MainActivityPresenter(this)
-            showOptionsFragment()
+            presenter = MainActivityPresenter(this, NetworkConnectivityUtil(this))
+            presenter?.startUI()
         }
+    }
+
+    override fun attachFragment() {
+        showOptionsFragment()
     }
 
     /*
@@ -58,6 +65,24 @@ class MainActivity : AppCompatActivity(), MainActivityMVPContract.View, OptionsC
             .replace(R.id.fragment_container, fragmentToAdd, fragmentTag)
             .addToBackStack(fragmentTag)
             .commitAllowingStateLoss()
+    }
+
+    /*
+    * Shows the no network message and close the app when user click OK
+    * */
+    override fun showNoNetworkMessage() {
+        Log.d(logTag, "Network popup displayed")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.label_no_network))
+        builder.setMessage(getString(R.string.no_network_message))
+
+        val positiveText = getString(android.R.string.ok)
+        builder.setPositiveButton(positiveText) { dialog, _ ->
+            dialog.dismiss()
+            finish()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     /**

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="banty.com.cryptostats">
-        <uses-permission android:name="android.permission.INTERNET"/>
+          xmlns:tools="http://schemas.android.com/tools"
+          package="banty.com.cryptostats">
+
+    <!--permission for internet access-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--permission for checking if device is connected to internet-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
             android:name=".BitcoinStatsApplication"
             android:allowBackup="true"
