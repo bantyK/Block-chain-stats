@@ -1,13 +1,10 @@
 package banty.com.repository
 
 import banty.com.datamodels.response.BitcoinApiResponseModel
-import banty.com.repository.dagger.component.DaggerRepositoryComponent
-import banty.com.repository.dagger.module.RepositoryModule
 import banty.com.repository.local.LocalBitcoinRepository
 import banty.com.repository.remote.RemoteBitcoinRepository
 import banty.com.utility.NetworkConnectivityUtil
 import io.reactivex.Observable
-import javax.inject.Inject
 
 /**
  * Created by Banty on 05/01/19.
@@ -21,24 +18,21 @@ import javax.inject.Inject
  * Other caching mechanisms like timestamp, manual refresh etc can also be used to identify on the data source.
  *
  */
-class BitcoinRepository : Repository {
+class BitcoinRepository(
+    private val localBitcoinRepository: LocalBitcoinRepository,
+    private val remoteBitcoinRepository: RemoteBitcoinRepository,
+    private val networkUtil: NetworkConnectivityUtil
+) : Repository {
 
-    @Inject
-    lateinit var remoteBitcoinRepository: RemoteBitcoinRepository
-
-    @Inject
-    lateinit var localBitcoinRepository: LocalBitcoinRepository
-
-    @Inject
-    lateinit var networkUtil: NetworkConnectivityUtil
-
-    init {
-        DaggerRepositoryComponent.builder()
-            .repositoryModule(RepositoryModule())
-            .build()
-            .injectRetrofit(this)
-    }
-
+    /*
+    * If device has network connection then fetches the data from server and
+    * saves it in local storage using localRepository's save method
+    *
+    * If network connection is not present than directly fetches the data from local
+    * repository
+    *
+    * Same functionality is implemented by all the other methods which are used to get api data
+    * */
     override fun getMarketPrice(timespan: String): Observable<BitcoinApiResponseModel> {
         return if (networkUtil.isNetworkAvailable()) {
             val marketPrice = remoteBitcoinRepository.getMarketPrice(timespan)
@@ -80,6 +74,10 @@ class BitcoinRepository : Repository {
         }
     }
 
+    /*
+    * below 4 methods are helper functions which delegate the task to locally storing the
+    * data to local repository
+    */
     override fun saveMarketPriceModel(marketPrice: Observable<BitcoinApiResponseModel>) {
         localBitcoinRepository.saveMarketPriceModel(marketPrice)
     }

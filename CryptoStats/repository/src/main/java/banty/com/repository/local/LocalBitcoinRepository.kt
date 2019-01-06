@@ -21,9 +21,12 @@ import io.reactivex.schedulers.Schedulers
  * user's device instead of fetching it from bitcoin api.
  */
 
-class LocalBitcoinRepository(val fileManager: FileManager) : Repository {
+class LocalBitcoinRepository(private val fileManager: FileManager) : Repository {
 
-    // below 4 methods uses the fileManager class to get the data from the local file system
+    /*
+    * Below 4 methods uses the fileManager class to get the data from the local file system
+    * and returns them in the form of an Observable.
+    */
     override fun getAverageBlockSize(timespan: String): Observable<BitcoinApiResponseModel> {
         return Observable.just(fileManager.getObjectFromFile(CHART_AVERAGE_BLOCK_SIZE))
 
@@ -42,18 +45,31 @@ class LocalBitcoinRepository(val fileManager: FileManager) : Repository {
     }
 
     // below 4 methods saves the data in the internal file system
+
+    /*
+    * Saves MarketPrice data into local file system
+    * */
     override fun saveMarketPriceModel(marketPrice: Observable<BitcoinApiResponseModel>) {
         saveModel(CHART_MARKET_PRICE, marketPrice)
     }
 
+    /*
+    * Saves AverageBlockSize data into local file system
+    * */
     override fun saveAverageBlockSizeModel(averageBlockSize: Observable<BitcoinApiResponseModel>) {
         saveModel(CHART_AVERAGE_BLOCK_SIZE, averageBlockSize)
     }
 
+    /*
+    * Saves NumberOfTransactions data into local file system
+    * */
     override fun saveNumTransactionModel(numTransactions: Observable<BitcoinApiResponseModel>) {
         saveModel(CHART_NUM_TRANSACTION, numTransactions)
     }
 
+    /*
+    * Saves MemoryPoolSize data into local file system
+    * */
     override fun saveMemoryPoolSizeModel(memoryPoolSize: Observable<BitcoinApiResponseModel>) {
         saveModel(CHART_MEMORY_POOL, memoryPoolSize)
     }

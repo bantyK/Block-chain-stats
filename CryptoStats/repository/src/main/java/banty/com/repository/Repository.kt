@@ -12,20 +12,44 @@ import io.reactivex.Observable
  */
 interface Repository {
 
-    fun getMarketPrice(timespan: String): Observable<BitcoinApiResponseModel>
+    /*
+    * Method to get the MarketPrice from Repository
+    * */
+    fun getMarketPrice(timespan: String): Observable<BitcoinApiResponseModel>?
 
-    fun getAverageBlockSize(timespan: String): Observable<BitcoinApiResponseModel>
+    /*
+    * Method to get the AverageBlockSize from Repository
+    * */
+    fun getAverageBlockSize(timespan: String): Observable<BitcoinApiResponseModel>?
 
-    fun getNumberOfTransactions(timespan: String): Observable<BitcoinApiResponseModel>
+    /*
+    * Method to get the NumberOfTransactions from Repository
+    * */
+    fun getNumberOfTransactions(timespan: String): Observable<BitcoinApiResponseModel>?
 
-    fun getMemoryPoolSize(timespan: String): Observable<BitcoinApiResponseModel>
+    /*
+    * Method to get the MemoryPoolSize from Repository
+    * */
+    fun getMemoryPoolSize(timespan: String): Observable<BitcoinApiResponseModel>?
 
+    /*
+    * Method to save the MarketPrice into Repository
+    * */
     fun saveMarketPriceModel(marketPrice: Observable<BitcoinApiResponseModel>)
 
+    /*
+    * Method to save the AverageBlockSize Data into Repository
+    * */
     fun saveAverageBlockSizeModel(averageBlockSize: Observable<BitcoinApiResponseModel>)
 
+    /*
+    * Method to save the NumberOfTransactions data into Repository
+    * */
     fun saveNumTransactionModel(numTransactions: Observable<BitcoinApiResponseModel>)
 
+    /*
+    * Method to save the MemoryPoolSize data into Repository
+    * */
     fun saveMemoryPoolSizeModel(memoryPoolSize: Observable<BitcoinApiResponseModel>)
 
 }

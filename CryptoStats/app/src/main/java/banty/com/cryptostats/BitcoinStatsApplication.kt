@@ -20,7 +20,7 @@ class BitcoinStatsApplication : Application() {
         // app component is initialised here to make sure that there is a single instance of all the dependencies
         // provided by this component
         appComponent = DaggerAppComponent.builder()
-            .appModule(AppModule())
+            .appModule(AppModule(this))
             .build() as DaggerAppComponent
 
         // set context to context provider
