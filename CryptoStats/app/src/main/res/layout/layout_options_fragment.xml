@@ -3,63 +3,64 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
     <TextView
+            android:id="@+id/options_label"
             android:layout_marginTop="@dimen/dimen_20DP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/select_options"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:padding="@dimen/dimen_20DP"
-            android:textSize="@dimen/text_size_20SP"
-    />
+            android:paddingBottom="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-    <RelativeLayout android:layout_width="match_parent"
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/options_label">
+
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_16DP">
+            <Button
+                    android:id="@+id/button_market_price"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-        <Button
-                android:id="@+id/button_market_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:text="@string/market_price"
-                android:textAllCaps="true"
-                android:layout_margin="16dp"
-                style="@style/Widget.AppCompat.Button"/>
+                    android:padding="@dimen/dimen_20DP"
+                    android:text="@string/market_price"
+                    android:textAllCaps="true"
+                    style="@style/Widget.AppCompat.Button"/>
 
-        <Button
-                android:id="@+id/button_avg_block_size"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:text="@string/avg_block_size"
-                android:textAllCaps="true"
-                android:layout_below="@id/button_market_price"
-                android:layout_margin="16dp"
-                style="@style/Widget.AppCompat.Button"/>
+            <Button
+                    android:id="@+id/button_avg_block_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:text="@string/avg_block_size"
+                    android:textAllCaps="true"
+                    android:layout_below="@id/button_market_price"
+                    style="@style/Widget.AppCompat.Button"/>
 
 
-        <Button
-                android:id="@+id/button_num_transactions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:text="@string/num_transaction"
-                android:textAllCaps="true"
-                android:layout_below="@id/button_avg_block_size"
-                android:layout_margin="16dp"
-                style="@style/Widget.AppCompat.Button"/>
+            <Button
+                    android:id="@+id/button_num_transactions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:text="@string/num_transaction"
+                    android:textAllCaps="true"
+                    android:layout_below="@id/button_avg_block_size"
+                    style="@style/Widget.AppCompat.Button"/>
 
-        <Button
-                android:id="@+id/button_mem_pool"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/mem_pool"
-                android:padding="20dp"
-                android:textAllCaps="true"
-                android:layout_below="@id/button_num_transactions"
-                android:layout_margin="16dp"
-                style="@style/Widget.AppCompat.Button"/>
+            <Button
+                    android:id="@+id/button_mem_pool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mem_pool"
+                    android:padding="20dp"
+                    android:textAllCaps="true"
+                    android:layout_below="@id/button_num_transactions"
+                    style="@style/Widget.AppCompat.Button"/>
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
