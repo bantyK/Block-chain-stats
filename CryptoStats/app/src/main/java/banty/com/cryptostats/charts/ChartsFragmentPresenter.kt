@@ -43,7 +43,7 @@ class ChartsFragmentPresenter(private val chartsFragmentView: ChartsFragmentMVPC
     override fun setChartData(bitCoinData: BitcoinApiResponseModel?) {
         val xAxisValues = getXAxisValues(bitCoinData)
         val yAxisValues = getYAxisValues(bitCoinData)
-        val data: LineData = ChartCreator().createChart(xAxisValues, yAxisValues, bitCoinData?.name)
+        val data: LineData = chartCreator.createChart(xAxisValues, yAxisValues, bitCoinData?.name)
         chartsFragmentView?.showChart(data)
     }
 
